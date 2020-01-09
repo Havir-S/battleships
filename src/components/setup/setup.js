@@ -1,7 +1,7 @@
 import React from 'react';
 import ShipConfiguration from './ShipConfiguration.js';
 import GridConfiguration from './GridConfiguration.js';
-import { ShipClass, CreateShipObjects} from '../SHIP_CREATOR.js';
+
 
 export default class Setup extends React.Component {
   constructor(props) {
@@ -79,7 +79,11 @@ export default class Setup extends React.Component {
           <button onClick={() => this.props.changeCurrentViewedTab(this.props.currentViewedTab,'add')} type="button" >Go forward</button>
           <button onClick={() => this.props.changeCurrentViewedTab(this.props.currentViewedTab,'subtract')} type="button" >Go back</button>
         </div>
-      )
+        )
+        break;
+        default:
+        break;
+
       }
       })()}
 

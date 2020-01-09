@@ -1,9 +1,6 @@
 import React from 'react';
 
 export default class WelcomeTab extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (

@@ -4,15 +4,14 @@ import './scss/mainStyle.scss';
 
 //settings and constructors
 import { SETTINGS, STATICVALUES } from './components/MAIN_SETTINGS.js';
-import { ShipClass, CreateShipObjects} from './components/SHIP_CREATOR.js';
+import { CreateShipObjects } from './components/SHIP_CREATOR.js';
 
 //components
-import SoundPlayer from './components/soundPlayer.js';
+
 
 //setup
 import Setup from './components/setup/setup.js';
 import WelcomeTab from './components/setup/WelcomeTab.js'
-
 import Grid from './components/grid/grid.js';
 
 let tabsInOrder = ['welcomeTab', 'shipsSettingsTab', 'sizeSettingsTab', 'gameTab'];
@@ -26,7 +25,8 @@ class App extends React.Component {
       ships: SETTINGS.ships,
       field: SETTINGS.field,
       startValues: SETTINGS.startValues,
-      currentViewedTab: tabsInOrder[0]
+      currentViewedTab: tabsInOrder[0],
+      actionsHistory: []
     }
     this.shipChange = this.shipChange.bind(this);
     this.gridChangeSize = this.gridChangeSize.bind(this);
@@ -34,6 +34,7 @@ class App extends React.Component {
     this.changeCurrentViewedTab = this.changeCurrentViewedTab.bind(this);
     this.changeStartValues = this.changeStartValues.bind(this);
     this.changePlayerShips = this.changePlayerShips.bind(this);
+    this.checkCoords = this.checkCoords.bind(this);
   }
 
   componentDidMount() {
@@ -117,6 +118,13 @@ class App extends React.Component {
     console.log(x);
   }
 
+  // SPAWNING SHIPS START HERE ===============================================================
+
+  checkCoords(x) {
+    console.log(x.target);
+    console.log(x.target.getAttribute('data-coords'));
+  }
+
   render() {
     let currentTab;
     switch (this.state.currentViewedTab) {
@@ -150,6 +158,7 @@ class App extends React.Component {
                  changeCurrentViewedTab={this.changeCurrentViewedTab}
 
                  changePlayerShips={this.changePlayerShips}
+                 checkCoords={this.checkCoords}
 
           />
         );
@@ -171,11 +180,13 @@ class App extends React.Component {
                  field={this.state.field}
                  startValues={this.state.startValues}
                  staticValues={STATICVALUES}
+                 changeStartValues={this.changeStartValues}
 
                  currentViewedTab={this.state.currentViewedTab}
                  changeCurrentViewedTab={this.changeCurrentViewedTab}
 
                  changePlayerShips={this.changePlayerShips}
+                 checkCoords={this.checkCoords}
 
           />
         );
@@ -192,8 +203,12 @@ class App extends React.Component {
                   test={this.state}
                   playerShips={this.state.playerShips}
 
+                  checkCoords={this.checkCoords}
+
              />
         );
+      break;
+      default:
       break;
     }
 

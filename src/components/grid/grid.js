@@ -1,20 +1,12 @@
 import React from 'react';
 
 class GridSide extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+
 
   render() {
-
-
     let howMany = this.props.maxValues[this.props.valuesToCheck];
     let staticValues = this.props.staticValues.slice(0, howMany );
-    let hey;
     // FIXME: A fast fix for the X bar, values for some reason don't react to auto-fill/auto-fit values in css and have to manually specify the amount of boxes
-    if (this.props.valuesToCheck === 'x') {
-      hey = `color: 'black'`;
-    }
 
     return (
       <>
@@ -23,7 +15,7 @@ class GridSide extends React.Component {
           {staticValues.map((el) => <div key={el}>{el}</div>)}
           </div> :
 
-          <div className={`grid-side ` + this.props.gridPosition} style={{hey}}>
+          <div className={`grid-side ` + this.props.gridPosition}>
             {staticValues.map((el) => <div key={el}>{el}</div>)}
           </div>
 
@@ -38,7 +30,20 @@ class GridSide extends React.Component {
 export default class Grid extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      choosenShip: ""
+    }
+    this.assignShip = this.assignShip.bind(this);
   }
+
+  assignShip(e) {
+    if (typeof this.state.choosenShip === 'object') {
+      this.state.choosenShip.classList.remove('choosenShip');
+    }
+    e.target.classList.add('choosenShip');
+    this.setState({choosenShip: e.target});
+  }
+
 
   render() {
     let { x, y } = this.props.maxValues;
@@ -47,9 +52,32 @@ export default class Grid extends React.Component {
     let squares = [];
     for (var i = 1; i <= x; i++) {
       for (var j = 1; j <= y; j++) {
-      squares.push(<div data-coords={`${i},${j}`} className="square" key={`${i},${j}`}>{i}</div>)
+      squares.push(<div data-coords={`${j},${i}`}
+                    className="square"
+                    onClick={this.props.checkCoords}
+                    key={`${j},${i}`}>
+                    {i}
+                    </div>)
       }
     }
+
+    console.log(this.props.test);
+
+    // SHIPS ========================================================================
+
+    let ships = [];
+    this.props.playerShips.map((ship,index) => {
+      ships.push(
+        <div className="ship" key={index}
+                              style={{width: `${ship.healthNumber * 100}px`}}
+                              onClick={(e) => this.assignShip(e)}
+
+                              >
+                              {ship.name}
+        </div>
+      )
+      return;
+    })
 
     return (
       <>
@@ -68,7 +96,6 @@ export default class Grid extends React.Component {
       />
         {squares}
 
-
       </div>
       <button onClick={() => this.props.changeCurrentViewedTab(this.props.currentViewedTab,'add')}
               type="button">
@@ -78,6 +105,10 @@ export default class Grid extends React.Component {
               type="button">
               Go back
       </button>
+
+      <div className="shipsHangar">
+      {ships}
+      </div>
     </>
     )
   }

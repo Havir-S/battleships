@@ -1,9 +1,6 @@
 import React from 'react';
 
 class HealthPreview extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
 
@@ -23,9 +20,6 @@ class HealthPreview extends React.Component {
 }
 
 export default class ShipConfiguration extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (

@@ -71,3 +71,26 @@ header {
     height: 10px;
   }
 }
+
+.ship {
+  background: green;
+}
+
+.choosenShip {
+  border: 3px solid gold;
+  background: darken(green, 10%);
+}
+
+.shipsHangar {
+  border: 2px solid black;
+  width: 80%;
+  height: 300px;
+  margin-top: 30px;
+  .ship {
+    display: inline-block;
+    margin:5px;
+    height: 30px;
+    font-size: 20px;
+    line-height: 30px;
+  }
+}

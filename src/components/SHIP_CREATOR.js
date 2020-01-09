@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 //We create all the ships here from the main ships object in the App.js
 function CreateShipObjects(x) {
@@ -19,26 +19,42 @@ class ShipClass {
   constructor(name,healthNumber) {
     this.name = name;
     this.healthNumber = healthNumber;
-    this.blocks = [
-      {
-        posX: 5,
-        posY: 6,
-        hit: false
-      },
-      {
-        posX: 5,
-        posY: 7,
-        hit: false
-      },
-      {
-        posX: 5,
-        posY: 8,
-        hit: false
-      }
-    ]
+    this.blocks = []
+    this.sayAll = this.sayAll.bind(this);
   }
   sayAll() {
+    console.log(this);
     console.log(`${this.name} ${this.healthNumber}`)
+    console.log(this.blocks);
+  }
+
+  //this is where we set the hp
+  blockSet(firstCoord,direction) {
+
+    let coords = firstCoord.split(",");
+    let coordX = coords[0];
+    let coordY = coords[1];
+
+    if(direction === 'x') {
+      for (var i = 0; i < this.healthNumber; i++) {
+        let hpBar = {
+          x: coordX + i,
+          y: coordY,
+          isHit: false
+        }
+        this.blocks.push(hpBar);
+      }
+    } else if (direction ==='y') {
+      for (var j = 0; j < this.healthNumber; j++) {
+        let hpBar = {
+          x: coordX,
+          y: coordY + j,
+          isHit: false
+        }
+        this.blocks.push(hpBar);
+      }
+    }
+
   }
 }
 

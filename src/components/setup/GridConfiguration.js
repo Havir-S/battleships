@@ -1,9 +1,6 @@
 import React from 'react';
 
 export default class GridConfiguration extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     let { x, y } = this.props.field;
