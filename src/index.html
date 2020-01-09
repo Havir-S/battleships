@@ -3,10 +3,130 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <style media="screen">
+      .box1, .box2 {
+        width: 200px;
+        height: 200px;
+        border:5px solid green;
+        position: relative;
+      }
+      .box3 {
+        height: 50px;
+        width: 50px;
+        background:blue;
+        position: absolute;
+
+        transition: all .2s;
+      }
+    </style>
   </head>
   <body>
+    <div draggable="true" class="box3">
+      <img src="./imgs/battleship.png" alt="">
+    </div>
+    <!-- <div class='box1'>
+
+    </div>
+    <div class='box2'></div>
     <audio controls>
       <source src="./music/criticalHitMP3.mp3" type="audio/mp3">
     </audio>
+    <button type="button" name="button">change</button> -->
+
+    <script type="text/javascript">
+      let button = document.querySelector('button');
+      let box3 = document.querySelector('.box3');
+      let box2 = document.querySelector('.box2');
+      let box1 = document.querySelector('.box1');
+
+      // window.addEventListener('mousedown', function(e) {
+      //   console.log(e);
+      //   box3.style.top = `${e.clientY}px`;
+      //   box3.style.left = `${e.clientX - 25}px`;
+      // })
+
+      dragElement(box3);
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    /* if present, the header is where you move the DIV from:*/
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    /* otherwise, move the DIV from anywhere inside the DIV:*/
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    /* stop moving when mouse button is released:*/
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+      // box3.addEventListener('drag', function(e) {
+      //   console.log(e);
+      //   e.preventDefault();
+      //     box3.style.top = `${e.clientY}px`;
+      //     box3.style.left = `${e.clientX - 25}px`;
+      // })
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // box3.addEventListener('dragstart', function(e) {
+      //   console.log(e.dataTransfer);
+      //   event.dataTransfer.setData("Text", event.target.id);
+      // })
+      //
+      // box2.addEventListener('drop', function(e) {
+      //   e.preventDefault();
+      //   console.log(e.target);
+      //   console.log('drop started');
+      //
+      // })
+      //
+      // box2.addEventListener('dragenter', function(e) {
+      //   console.log(e);
+      //   console.log('drag enter started');
+      // })
+      //
+      // button.addEventListener('click', () => {
+      //   console.log('ding');
+      // })
+    </script>
   </body>
 </html>
