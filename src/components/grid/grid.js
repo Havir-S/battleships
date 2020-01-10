@@ -1,30 +1,45 @@
 import React from 'react';
+import GridSide from './gridSide.js';
 
-class GridSide extends React.Component {
-
+class GridElement extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
   render() {
-    let howMany = this.props.maxValues[this.props.valuesToCheck];
-    let staticValues = this.props.staticValues.slice(0, howMany );
-    // FIXME: A fast fix for the X bar, values for some reason don't react to auto-fill/auto-fit values in css and have to manually specify the amount of boxes
-
     return (
-      <>
-      { this.props.valuesToCheck === 'y' ?
-        <div className={`grid-side ` + this.props.gridPosition} style={{gridTemplateColumns: `repeat(${howMany}, 1fr)`}}>
-          {staticValues.map((el) => <div key={el}>{el}</div>)}
-          </div> :
-
-          <div className={`grid-side ` + this.props.gridPosition}>
-            {staticValues.map((el) => <div key={el}>{el}</div>)}
-          </div>
-
-      }
-
-      </>
+      <div data-coords={`${this.props.coordX},${this.props.coordY}`}
+                    className="square"
+                    onClick={(e) => {
+                      this.props.deployShip(e);
+                    }}
+                    >
+                    {`${this.props.coordX},${this.props.coordY}`}
+                    </div>
     )
   }
 }
+
+class GridElementShip extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div data-coords={`${this.props.coordX},${this.props.coordY}`}
+                    className="square ship"
+                    onClick={(e) => {
+                      this.props.deployShip(e);
+                    }}
+                    >
+                    {`hi`}
+                    </div>
+    )
+  }
+}
+
+
 
 
 export default class Grid extends React.Component {
@@ -32,10 +47,12 @@ export default class Grid extends React.Component {
     super(props);
     this.state = {
       choosenShipDiv: "",
-      choosenShipClass: ""
+      choosenShipClass: "",
+      deploymentDirection: "x"
     }
     this.assignShip = this.assignShip.bind(this);
     this.deployShip = this.deployShip.bind(this);
+    this.handleDeploymentDirection = this.handleDeploymentDirection.bind(this);
   }
 
   //AFTER CLICKING A SHIP
@@ -58,14 +75,24 @@ export default class Grid extends React.Component {
 
     if (typeof this.state.choosenShipDiv === 'object') {
       this.state.choosenShipDiv.classList.remove('choosenShip');
-      //we make it deployed, therefore it will appear on the grid
-      this.state.choosenShipClass.changeValue('deployed',true);
+
       //we create the HP BLOCKS inside the Ship class
       let firstCoord = x.target.getAttribute('data-coords');
-      this.state.choosenShipClass.blockSet(firstCoord, 'x');
+      if (this.state.choosenShipClass.blockSet(firstCoord, this.state.deploymentDirection,this.props.playerDeployedShips)) {
+        console.log('hey we got true SO NO DIVS ARE OVERLAPPING');
+
+        //we make it deployed, therefore it will appear on the grid
+        this.state.choosenShipClass.changeValue('deployed',true);
+
+        //pushes the new ship to the main array of deployed ships
+        this.props.handlePlayerDeployedShips(this.state.choosenShipClass);
+
+      } else {
+        console.log('Action stopped, because of overlapping ships');
+      }
 
       //we send this deployed ship higher to the App.js where it is connected to the main state
-      this.props.handlePlayerDeployedShips(this.state.choosenShipClass);
+
 
       //reset of the values
       this.setState({
@@ -77,67 +104,75 @@ export default class Grid extends React.Component {
     }
   }
 
+  // DEPLOYMENT SETTINGS ==============================================================
+
+  handleDeploymentDirection() {
+    if (this.state.deploymentDirection === 'x') {
+      this.setState({deploymentDirection: 'y'});
+    } else {
+      this.setState({deploymentDirection: 'x'});
+    }
+  }
+
 
 
   render() {
     //this is how we know how many squares to the grid we need
     let { x, y } = this.props.maxValues;
 
+    // READ ====================================
+    // FIRST, WE CREATE THE SQUARES, then we have some fun with the deployed ships array
+    // We check the squares for the coords and we replace the empty grid element
+    // With the ships healthbar, if the coords match!
 
     let squares = [];
     //x coordinate FOR
     for (let i = 1; i <= x; i++) {
       //y coordinate FOR
       for (let j = 1; j <= y; j++) {
-        //check if the deployed ships coords match with the current coords, if so, then mark it
+          squares.push(<GridElement coordX={j}
+                                    coordY={i}
+                                    deployShip={this.deployShip}
+                                    key={`${j},${i}`}
+                                     />)
+      }
+    }
 
-          //deployed ships FOR
-          for (let k = 0; k < this.props.playerDeployedShips.length; k++) {
+    //Check every square
+    for (var z = 0; z < squares.length; z++) {
+      //getting the coords of all the squares
+      let [ squareCoordX, squareCoordY ] = squares[z].key.split(",");
 
-            //ships healthBlocks FOR
-            for (let m = 0; m < this.props.playerDeployedShips[k]['blocks'].length; m++) {
-              if (this.props.playerDeployedShips[k]['blocks'][m]['x'] === i && this.props.playerDeployedShips[k]['blocks'][m]['y'] === j ) {
-                console.log('found the good coords sir');
-                console.log(`${i} and ${j}`);
+      //check every ship
+      for (let deployedShip of this.props.playerDeployedShips) {
 
-                squares.push(<div data-coords={`${j},${i}`}
-                              className="square ship"
-                              onClick={(e) => {
-                                this.deployShip(e);
-                              }}
-                              key={`${j},${i}`}>
-                              {i}
-                              </div>);
-              } else {
-                console.log('ding');
+        //check every ships' hpBlocks coords
+        for (let hpBlock of deployedShip.blocks) {
+          let { x, y } = hpBlock;
+          if (x === Number(squareCoordX) && y === Number(squareCoordY)) {
+            //we create a replacement for the empty grid
+            let shipHpBar = <GridElementShip key={`${x},${y}`} />;
 
-              }
-            }
+            //and here we replace it
+            squares.splice(squares.indexOf(squares[z]),1,shipHpBar);
+
+
+
           }
-          squares.push(<div data-coords={`${j},${i}`}
-                        className="square"
-                        onClick={(e) => {
-                          this.deployShip(e);
-                        }}
-                        key={`${j},${i}`}>
-                        {i}
-                        </div>);
+          // HERE STARTS THE REAL MAGIC WHERE WE REPLACE THE GRID ELEMENTS WITH HP BAR BLOCKS
+        }
 
 
       }
     }
 
-    // squares.map(el => {
-    //   console.log(el.props['data-coords']);
-    // })
 
 
-
-console.log(this.props.playerDeployedShips);
 
     // SHIPS ========================================================================
 
     let ships = [];
+    //we filter it so only the not deployed ships show in the settings
     this.props.playerShips.filter(el => el.deployed === false).map((ship,index) => {
       ships.push(
         <div className="ship" key={index}
@@ -148,7 +183,22 @@ console.log(this.props.playerDeployedShips);
         </div>
       )
       return;
+
+
     })
+
+    // DEPLOYED SHIPS ========================================================================
+    let deployedShips = [];
+
+    this.props.playerDeployedShips.map((ship,index) => {
+      deployedShips.push(<div className="ship" key={index}
+                            style={{width: `${ship.healthNumber * 100}px`}}
+                            onClick={(e) => this.assignShip(e,ship)}
+                            >
+                            {ship.name}
+      </div>
+    )})
+
     return (
       <>
         <div className="grid" style={{gridTemplate:`repeat(${x}, 1fr) / repeat(${y}, 1fr)`}}>
@@ -176,8 +226,15 @@ console.log(this.props.playerDeployedShips);
               Go back
       </button>
 
+      <button onClick={this.handleDeploymentDirection}
+              type='button'>
+              Current Placement Direction: {this.state.deploymentDirection}
+      </button>
       <div className="shipsHangar">
       {ships}
+      </div>
+      <div className="shipsHangar">
+      {deployedShips}
       </div>
     </>
     )

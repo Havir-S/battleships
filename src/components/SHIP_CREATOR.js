@@ -4,9 +4,8 @@
 function CreateShipObjects(x) {
   let arr = [];
   let shipsObj = Object.entries(x);
-  for (var i = 0; i < shipsObj.length; i++) {
-    // console.log(`i am ${shipsObj[i][0]} and my ships have ${shipsObj[i][1].health} health and there is ${shipsObj[i][1].amount} of them`);
-    for (var j = 0; j < shipsObj[i][1].amount; j++) {
+  for (let i = 0; i < shipsObj.length; i++) {
+    for (let j = 0; j < shipsObj[i][1].amount; j++) {
       let ship = new ShipClass(shipsObj[i][1].name, shipsObj[i][1].health);
       arr.push(ship);
     }
@@ -34,34 +33,59 @@ class ShipClass {
   }
 
   //this is where we set the hp
-  blockSet(firstCoord,direction) {
+  blockSet(firstCoord,direction,playerDeployedShips) {
 
+    console.log(playerDeployedShips);
     let coords = firstCoord.split(",");
     let coordX = coords[0];
     let coordY = coords[1];
-    console.log(this.healthNumber);
-    if(direction === 'x') {
-      for (var i = 0; i < this.healthNumber; i++) {
-        let hpBar = {
+    let hpBar;
+
+    if (direction === 'x') {
+      for (let i = 0; i < this.healthNumber; i++) {
+        hpBar = {
           x: Number(coordX) + i,
           y: Number(coordY),
           isHit: false
         }
-        console.log(hpBar);
         this.blocks.push(hpBar);
       }
     } else if (direction ==='y') {
-      for (var j = 0; j < this.healthNumber; j++) {
-        let hpBar = {
+      for (let j = 0; j < this.healthNumber; j++) {
+        hpBar = {
           x: Number(coordX),
           y: Number(coordY) + j,
           isHit: false
         }
-
         this.blocks.push(hpBar);
       }
     }
 
+    //Check if coords do not overlapse!
+
+    //we're checking for all the hpblocks
+    for (let thisBlock of this.blocks) {
+      let coordX = thisBlock.x;
+      let coordY = thisBlock.y;
+      //checking for all the deployed ships
+    for (let ship of playerDeployedShips) {
+
+      //checking the deployed ships coords
+      for (let blocks of ship.blocks) {
+        let {x, y} = blocks;
+        if (x === coordX && y === coordY) {
+          console.log(`coords ${x},${y} OVERLAPSE!`);
+          this.blocks = [];
+          return false;
+        }
+
+
+      }
+    }
+  }
+
+
+    return true;
   }
 }
 
