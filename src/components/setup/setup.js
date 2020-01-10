@@ -70,7 +70,7 @@ export default class Setup extends React.Component {
           </button>
         </div>
         )
-        break;
+
         case 'shipsSettingsTab':
         return (
         <div className='setup-ships'>
@@ -80,7 +80,6 @@ export default class Setup extends React.Component {
           <button onClick={() => this.props.changeCurrentViewedTab(this.props.currentViewedTab,'subtract')} type="button" >Go back</button>
         </div>
         )
-        break;
         default:
         break;
 

@@ -14,13 +14,14 @@ import Setup from './components/setup/setup.js';
 import WelcomeTab from './components/setup/WelcomeTab.js'
 import Grid from './components/grid/grid.js';
 
-let tabsInOrder = ['welcomeTab', 'shipsSettingsTab', 'sizeSettingsTab', 'gameTab'];
+let tabsInOrder = [ 'gameTab','welcomeTab', 'shipsSettingsTab', 'sizeSettingsTab',];
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       playerShips: [],
+      playerDeployedShips: [],
       aiShips: [],
       ships: SETTINGS.ships,
       field: SETTINGS.field,
@@ -34,7 +35,7 @@ class App extends React.Component {
     this.changeCurrentViewedTab = this.changeCurrentViewedTab.bind(this);
     this.changeStartValues = this.changeStartValues.bind(this);
     this.changePlayerShips = this.changePlayerShips.bind(this);
-    this.checkCoords = this.checkCoords.bind(this);
+    this.handlePlayerDeployedShips = this.handlePlayerDeployedShips.bind(this);
   }
 
   componentDidMount() {
@@ -66,7 +67,6 @@ class App extends React.Component {
     //HERE WE ALSO CHANGE THE PLAYERSHIPS AND AISHIPS as the options continue to change
 
     this.setState({playerShips: CreateShipObjects(newShips)});
-    console.log(this.state.playerShips);
   }
 
   //change grid sizes with buttons  =================================== ===================================
@@ -119,10 +119,15 @@ class App extends React.Component {
   }
 
   // SPAWNING SHIPS START HERE ===============================================================
-
-  checkCoords(x) {
-    console.log(x.target);
-    console.log(x.target.getAttribute('data-coords'));
+  //this is the function that stores all the ships that user puts on the starting grid
+  handlePlayerDeployedShips(x) {
+    // console.log(x);
+    // console.log(this.state.playerDeployedShips);
+    let newArr = this.state.playerDeployedShips;
+    newArr.push(x);
+    this.setState({
+      playerDeployedShips: newArr
+    })
   }
 
   render() {
@@ -158,7 +163,6 @@ class App extends React.Component {
                  changeCurrentViewedTab={this.changeCurrentViewedTab}
 
                  changePlayerShips={this.changePlayerShips}
-                 checkCoords={this.checkCoords}
 
           />
         );
@@ -186,7 +190,6 @@ class App extends React.Component {
                  changeCurrentViewedTab={this.changeCurrentViewedTab}
 
                  changePlayerShips={this.changePlayerShips}
-                 checkCoords={this.checkCoords}
 
           />
         );
@@ -203,7 +206,8 @@ class App extends React.Component {
                   test={this.state}
                   playerShips={this.state.playerShips}
 
-                  checkCoords={this.checkCoords}
+                  playerDeployedShips={this.state.playerDeployedShips}
+                  handlePlayerDeployedShips={this.handlePlayerDeployedShips}
 
              />
         );
