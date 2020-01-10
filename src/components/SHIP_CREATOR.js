@@ -33,8 +33,9 @@ class ShipClass {
   }
 
   //this is where we set the hp
-  blockSet(firstCoord,direction,playerDeployedShips) {
+  blockSet(firstCoord,direction,playerDeployedShips,maxValues) {
 
+    console.log(maxValues);
     console.log(playerDeployedShips);
     let coords = firstCoord.split(",");
     let coordX = coords[0];
@@ -73,7 +74,7 @@ class ShipClass {
       //checking the deployed ships coords
       for (let blocks of ship.blocks) {
         let {x, y} = blocks;
-        if (x === coordX && y === coordY) {
+        if (x === coordX && y === coordY || coordX > maxValues.x || coordY > maxValues.y) {
           console.log(`coords ${x},${y} OVERLAPSE!`);
           this.blocks = [];
           return false;
