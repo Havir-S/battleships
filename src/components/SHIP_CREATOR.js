@@ -73,7 +73,6 @@ class ShipClass {
       for (let blocks of ship.blocks) {
         let {x, y} = blocks;
         if ((x === coordX && y === coordY) || coordX > maxValues.x || coordY > maxValues.y) {
-          console.log(`coords ${x},${y} OVERLAPSE!`);
           this.blocks = [];
           return false;
         }

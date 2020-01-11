@@ -75,13 +75,8 @@ export default class Grid extends React.Component {
     //this option is used only by the ship boxes
 
     if (action === 'remove') {
-      console.log(x);
-      console.log('yup, you wanted to remove this one');
-      console.log(this.props.playerDeployedShips);
       this.props.handlePlayerDeployedShips(x,'remove');
     }
-
-
 
     // ADD SHIP TO THE GRID ========================================================================
 
@@ -95,8 +90,6 @@ export default class Grid extends React.Component {
       let firstCoord = x.target.getAttribute('data-coords');
       //Here we check for the overlapping ships === this function returns TRUE if everything is right and we can proceed further
       if (this.state.choosenShipClass.blockSet(firstCoord, this.state.deploymentDirection, this.props.playerDeployedShips, this.props.maxValues)) {
-        console.log('hey we got true SO NO DIVS ARE OVERLAPPING');
-
         //we make it deployed, therefore it will appear on the grid
         this.state.choosenShipClass.changeValue('deployed',true);
 

@@ -13,8 +13,9 @@ import { CreateShipObjects } from './components/SHIP_CREATOR.js';
 import Setup from './components/setup/setup.js';
 import WelcomeTab from './components/setup/WelcomeTab.js'
 import Grid from './components/grid/grid.js';
+import GameTab from './components/gameTab/gameTab.js';
 
-let tabsInOrder = [ 'gameTab','welcomeTab', 'shipsSettingsTab', 'sizeSettingsTab',];
+let tabsInOrder = [ 'gridTab','gameTab','welcomeTab', 'shipsSettingsTab', 'sizeSettingsTab'];
 
 class App extends React.Component {
   constructor(props) {
@@ -27,7 +28,8 @@ class App extends React.Component {
       field: SETTINGS.field,
       startValues: SETTINGS.startValues,
       currentViewedTab: tabsInOrder[0],
-      actionsHistory: []
+      actionsHistory: [],
+      turn: 'player'
     }
     this.shipChange = this.shipChange.bind(this);
     this.gridChangeSize = this.gridChangeSize.bind(this);
@@ -36,6 +38,10 @@ class App extends React.Component {
     this.changeStartValues = this.changeStartValues.bind(this);
     this.changePlayerShips = this.changePlayerShips.bind(this);
     this.handlePlayerDeployedShips = this.handlePlayerDeployedShips.bind(this);
+    this.handleHit = this.handleHit.bind(this);
+    this.checkWinner = this.checkWinner.bind(this);
+    this.handleEnemyHit = this.handleEnemyHit.bind(this);
+    this.handleAiDeployedShips = this.handleAiDeployedShips.bind(this);
   }
 
   componentDidMount() {
@@ -121,8 +127,6 @@ class App extends React.Component {
   // SPAWNING SHIPS START HERE ===============================================================
   //this is the function that stores all the ships that user puts on the starting grid
   handlePlayerDeployedShips(x, action) {
-    // console.log(x);
-    // console.log(this.state.playerDeployedShips);
     if (action === 'add') {
     let newArr = this.state.playerDeployedShips;
     newArr.push(x);
@@ -139,6 +143,34 @@ class App extends React.Component {
       playerDeployedShips: newArr
     });
   }
+}
+
+  //SPAWNING SHIPS FOR AI
+  handleAiDeployedShips(x) {
+
+  }
+
+// CHECK IF ALL SHIPS HAVE SUNK
+checkWinner() {
+
+}
+
+// PLAYER SHIP HIT LOGIC HERE =====================================================================
+handleHit(ship,hpBlock) {
+  if(!hpBlock.isHit) {
+    let newArr = this.state.playerDeployedShips;
+    hpBlock.isHit = true;
+
+    this.setState({
+      playerDeployedShips: newArr
+    });
+}
+  // newArr.indexOf(ship)
+}
+
+// AI SHIP HIT LOGIC HERE ==========================================================================
+handleEnemyHit(x) {
+  console.log(x);
 }
 
   render() {
@@ -205,7 +237,7 @@ class App extends React.Component {
           />
         );
       break;
-      case 'gameTab':
+      case 'gridTab':
         currentTab = (
             <Grid maxValues={this.state.field}
                   startValues={this.state.startValues}
@@ -222,6 +254,25 @@ class App extends React.Component {
 
              />
         );
+      break;
+      case 'gameTab':
+      currentTab = (
+        <GameTab currentViewedTab={this.state.currentViewedTab}
+                 changeCurrentViewedTab={this.changeCurrentViewedTab}
+                 playerDeployedShips={this.state.playerDeployedShips}
+
+                 handleAiDeployedShips={this.handleAiDeployedShips}
+
+                 maxValues={this.state.field}
+                 startValues={this.state.startValues}
+                 staticValues={STATICVALUES}
+                 shipsForAi={this.state.playerShips}
+
+                 handleHit={this.handleHit}
+                 handleEnemyHit={this.handleEnemyHit}
+        />
+
+      );
       break;
       default:
       break;
