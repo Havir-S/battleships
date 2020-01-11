@@ -120,15 +120,26 @@ class App extends React.Component {
 
   // SPAWNING SHIPS START HERE ===============================================================
   //this is the function that stores all the ships that user puts on the starting grid
-  handlePlayerDeployedShips(x) {
+  handlePlayerDeployedShips(x, action) {
     // console.log(x);
     // console.log(this.state.playerDeployedShips);
+    if (action === 'add') {
     let newArr = this.state.playerDeployedShips;
     newArr.push(x);
     this.setState({
       playerDeployedShips: newArr
     })
+  } else if (action === 'remove') {
+    //we make sure the ship shows up in the hangar again
+    x.deployed = false;
+    //we delete it from the deployed ships array
+    let newArr = this.state.playerDeployedShips;
+    newArr.splice(newArr.indexOf(x),1);
+    this.setState({
+      playerDeployedShips: newArr
+    });
   }
+}
 
   render() {
     let currentTab;

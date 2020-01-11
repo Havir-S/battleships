@@ -11,7 +11,7 @@ class GridElement extends React.Component {
       <div data-coords={`${this.props.coordX},${this.props.coordY}`}
                     className="square"
                     onClick={(e) => {
-                      this.props.deployShip(e);
+                      this.props.handleShipClick(e);
                     }}
                     >
                     {`${this.props.coordX},${this.props.coordY}`}
@@ -26,11 +26,12 @@ class GridElementShip extends React.Component {
   }
 
   render() {
+
     return (
       <div data-coords={`${this.props.coordX},${this.props.coordY}`}
                     className="square ship"
                     onClick={(e) => {
-                      this.props.deployShip(e);
+                      this.props.handleShipClick(this.props.ship,'remove');
                     }}
                     >
                     {`hi`}
@@ -51,7 +52,7 @@ export default class Grid extends React.Component {
       deploymentDirection: "x"
     }
     this.assignShip = this.assignShip.bind(this);
-    this.deployShip = this.deployShip.bind(this);
+    this.handleShipClick = this.handleShipClick.bind(this);
     this.handleDeploymentDirection = this.handleDeploymentDirection.bind(this);
   }
 
@@ -68,24 +69,39 @@ export default class Grid extends React.Component {
   }
 
   //EVENT FOR ALL THE SQUARES
-  deployShip(x) {
+  handleShipClick(x,action) {
+
+    //REMOVE SHIP FROM THE GRID ====================================================================
+    //this option is used only by the ship boxes
+
+    if (action === 'remove') {
+      console.log(x);
+      console.log('yup, you wanted to remove this one');
+      console.log(this.props.playerDeployedShips);
+      this.props.handlePlayerDeployedShips(x,'remove');
+    }
+
+
+
+    // ADD SHIP TO THE GRID ========================================================================
 
     //if first, we have a selected ship, we then can proceed further with this function,
     //it takes the data from the selected ship and tries to assign it on the grid
 
-    if (typeof this.state.choosenShipDiv === 'object') {
+    else if (typeof this.state.choosenShipDiv === 'object') {
       this.state.choosenShipDiv.classList.remove('choosenShip');
 
       //we create the HP BLOCKS inside the Ship class
       let firstCoord = x.target.getAttribute('data-coords');
-      if (this.state.choosenShipClass.blockSet(firstCoord, this.state.deploymentDirection,this.props.playerDeployedShips,this.props.maxValues)) {
+      //Here we check for the overlapping ships === this function returns TRUE if everything is right and we can proceed further
+      if (this.state.choosenShipClass.blockSet(firstCoord, this.state.deploymentDirection, this.props.playerDeployedShips, this.props.maxValues)) {
         console.log('hey we got true SO NO DIVS ARE OVERLAPPING');
 
         //we make it deployed, therefore it will appear on the grid
         this.state.choosenShipClass.changeValue('deployed',true);
 
         //pushes the new ship to the main array of deployed ships
-        this.props.handlePlayerDeployedShips(this.state.choosenShipClass);
+        this.props.handlePlayerDeployedShips(this.state.choosenShipClass, 'add');
 
       } else {
         console.log('Action stopped, because of overlapping ships');
@@ -132,7 +148,7 @@ export default class Grid extends React.Component {
       for (let j = 1; j <= y; j++) {
           squares.push(<GridElement coordX={j}
                                     coordY={i}
-                                    deployShip={this.deployShip}
+                                    handleShipClick={this.handleShipClick}
                                     key={`${j},${i}`}
                                      />)
       }
@@ -151,7 +167,11 @@ export default class Grid extends React.Component {
           let { x, y } = hpBlock;
           if (x === Number(squareCoordX) && y === Number(squareCoordY)) {
             //we create a replacement for the empty grid
-            let shipHpBar = <GridElementShip key={`${x},${y}`} />;
+            let shipHpBar = <GridElementShip key={`${x},${y}`}
+                                             handleShipClick={this.handleShipClick}
+                                             ship={deployedShip}
+
+             />;
 
             //and here we replace it
             squares.splice(squares.indexOf(squares[z]),1,shipHpBar);
