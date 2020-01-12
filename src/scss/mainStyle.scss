@@ -76,6 +76,10 @@ header {
 .ship {
   background: green;
 }
+.squareEnemy {
+  background: darken(darkgreen,10%);
+}
+
 .shipEnemy {
   background: darkred;
 }

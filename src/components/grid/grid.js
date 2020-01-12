@@ -76,6 +76,10 @@ export default class Grid extends React.Component {
 
     if (action === 'remove') {
       this.props.handlePlayerDeployedShips(x,'remove');
+      this.setState({
+        choosenShipDiv: "",
+        choosenShipClass: ""
+      });
     }
 
     // ADD SHIP TO THE GRID ========================================================================

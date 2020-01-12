@@ -24,6 +24,7 @@ class App extends React.Component {
       playerShips: [],
       playerDeployedShips: [],
       aiShips: [],
+      aiDeployedShips: [],
       ships: SETTINGS.ships,
       field: SETTINGS.field,
       startValues: SETTINGS.startValues,
@@ -47,7 +48,6 @@ class App extends React.Component {
   componentDidMount() {
     this.setState({
       playerShips: CreateShipObjects(SETTINGS.ships),
-      // aiShips: CreateShipObjects(SETTINGS.ships)
     })
   }
 
@@ -56,7 +56,7 @@ class App extends React.Component {
     let newShips = this.state.ships;
     //adding value
     if (action === 'add') {
-      //checking if value is not over 10
+      //checking if value is not over 10 //FIXME if needed
       if (this.state.ships[ship][data]) {
       }
     newShips[ship][data] += 1;
@@ -69,10 +69,14 @@ class App extends React.Component {
     }
     newShips[ship][data] -= 1;
   }
-    this.setState({ships: newShips});
-    //HERE WE ALSO CHANGE THE PLAYERSHIPS AND AISHIPS as the options continue to change
+    this.setState({
+      ships: newShips
 
-    this.setState({playerShips: CreateShipObjects(newShips)});
+    });
+
+    this.setState({
+      playerShips: CreateShipObjects(newShips)
+    });
   }
 
   //change grid sizes with buttons  =================================== ===================================
@@ -144,10 +148,14 @@ class App extends React.Component {
     });
   }
 }
-
   //SPAWNING SHIPS FOR AI
-  handleAiDeployedShips(x) {
-    console.log(x);
+  handleAiDeployedShips(x, action) {
+    let newArr = this.state.aiDeployedShips;
+    newArr.push(x);
+    this.setState({
+      aiDeployedShips: newArr
+    })
+
   }
 
 // CHECK IF ALL SHIPS HAVE SUNK
@@ -268,7 +276,9 @@ handleEnemyHit(x,y) {
                  maxValues={this.state.field}
                  startValues={this.state.startValues}
                  staticValues={STATICVALUES}
-                 shipsForAi={this.state.playerShips}
+
+                 shipsForAi={this.state.aiShips}
+                 aiDeployedShips={this.state.aiDeployedShips}
 
                  handleHit={this.handleHit}
                  handleEnemyHit={this.handleEnemyHit}

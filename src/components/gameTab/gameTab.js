@@ -10,46 +10,24 @@ export default class GameTab extends React.Component {
   }
 
   componentDidMount() {
-    //we create a set of randomly generated ships placed randomly
-    // console.log(this.props.shipsForAi);
-    let newAiShips = [];
-  
-    //making a new array just in case
-    let shipsForAi = this.props.shipsForAi.splice();
 
-    //Create as many enemy ships as the player has
-    for (let ship of shipsForAi) {
-      //Fully random 50/50 direction pick
-      let directionFlip = Math.round(Math.random()) === 0 ? 'x' : 'y';
-      //Max values of the map
-      let {x, y} = this.props.maxValues;
-      let randomX = Math.round(Math.random() * x);
-      let randomY = Math.round(Math.random() * y);
-      //Picking values for the
-      ship.blockSet(`${randomX},${randomY}`, directionFlip, shipsForAi, this.props.maxValues,true)
-    }
-    // this.props.handleAiDeployedShips(newAiShips);
-    // console.log(this.props.shipsForAi);
+
   }
 
 
   render() {
 
-    console.log(this.props.playerDeployedShips);
-
     return (
     <>
       <div className="game-div">
-        <GridGame currentViewedTab={this.props.currentViewedTab}
-                  owner='player'
-                  changeCurrentViewedTab={this.props.changeCurrentViewedTab}
+        <GridGame owner='player'
                   playerDeployedShips={this.props.playerDeployedShips}
                   maxValues={this.props.maxValues}
                   handleHit={this.props.handleHit}
         />
-        <GridGame currentViewedTab={this.props.currentViewedTab}
-                  owner='ai'
-                  changeCurrentViewedTab={this.props.changeCurrentViewedTab}
+        <GridGame owner='ai'
+                  playerDeployedShips={this.props.playerDeployedShips}
+                  aiDeployedShips={this.props.aiDeployedShips}
                   maxValues={this.props.maxValues}
                   handleEnemyHit={this.props.handleEnemyHit}
         />
