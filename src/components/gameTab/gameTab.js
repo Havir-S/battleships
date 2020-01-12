@@ -14,39 +14,6 @@ export default class GameTab extends React.Component {
     //here we make a new copy of the player ships and give em to the main App state
 
 
-
-    for (let ship of this.props.playerDeployedShips) {
-      console.log(ship);
-    }
-
-//     do {
-//      i = i + 1;
-//      result = result + i;
-//    } while (i < 5);
-// for (let aiShip of this.props.aiShips) {
-//     //random direction
-//   let randomDirection,
-//   let randomDirection = Math.round(Math.random()) ? 'x' : 'y';
-//
-//     //random coords
-//   let randomCoordX = Math.ceil(Math.random() * this.props.maxValues.x);
-//   let randomCoordY = Math.ceil(Math.random() * this.props.maxValues.y);
-//
-//   do {
-//
-//   } while
-//
-//   if(aiShip.blockSet(`${randomCoordX},${randomCoordY}`, randomDirection, this.props.aiDeployedShips, this.props.maxValues)) {
-//     console.log('ding');
-//     this.props.handleAiShips(aiShip);
-//   }
-//
-//
-// }
-
-
-    console.log('ai ships start here');
-
     for (let aiShip of this.props.aiShips) {
         //random direction
       let randomDirection,randomCoordX,randomCoordY;
@@ -57,12 +24,13 @@ export default class GameTab extends React.Component {
       } while (aiShip.blockSet(`${randomCoordX},${randomCoordY}`, randomDirection, this.props.aiDeployedShips, this.props.maxValues) === false);
 
       if(aiShip.blockSet(`${randomCoordX},${randomCoordY}`, randomDirection, this.props.aiDeployedShips, this.props.maxValues)) {
-        console.log('ding');
         this.props.handleAiShips(aiShip);
       }
 
 
     }
+
+    console.log(this.props.aiDeployedShips);
 
     //AI SHIPS DEPLOYMENT PROCESS STARTS HERE =====================================
     // this.props.handleAiShips(copiedShipsForAi);
@@ -71,7 +39,6 @@ export default class GameTab extends React.Component {
 
 
   render() {
-    console.log(this.props.aiDeployedShips);
     return (
     <>
       <div className="game-div">

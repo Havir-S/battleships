@@ -91,11 +91,27 @@ constructor(props) {
           for (let hpBar of aiDeployedShip.blocks) {
             let {x, y} = hpBar;
             if (x === Number(squareCoordX) && y === Number(squareCoordY)) {
-              let aiShipHpBar = <GridGameEnemyShipElement key={`${x},${y}`}
-                                                          coordX={x}
-                                                          coordY={y}
-                                                          handleEnemyHit={this.props.handleEnemyHit}
-              />
+              let aiShipHpBar;
+              //IF THE BLOCK GOT HIT IN THE PAST =================================
+              if (hpBar.isHit) {
+                aiShipHpBar = <GridGameEnemyShipElement key={`${x},${y}`}
+                                                            coordX={x}
+                                                            coordY={y}
+                                                            handleEnemyHit={this.props.handleEnemyHit}
+                                                            additionalClass='shipEnemyHit'
+                                                            ship={aiDeployedShip}
+                />
+              } else {
+                //IF THE BLOCK HAS NOT BEEN HIT BEFORE ================================
+                aiShipHpBar = <GridGameEnemyShipElement key={`${x},${y}`}
+                                                            coordX={x}
+                                                            coordY={y}
+                                                            handleEnemyHit={this.props.handleEnemyHit}
+                                                            additionalClass=''
+                                                            ship={aiDeployedShip}
+                />
+              }
+
               squares.splice(squares.indexOf(squares[k]),1,aiShipHpBar);
             }
           }

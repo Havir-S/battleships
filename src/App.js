@@ -30,7 +30,8 @@ class App extends React.Component {
       startValues: SETTINGS.startValues,
       currentViewedTab: tabsInOrder[0],
       actionsHistory: [],
-      turn: 'player'
+      turn: 'player',
+      allShipsHp: 0,
     }
     this.shipChange = this.shipChange.bind(this);
     this.gridChangeSize = this.gridChangeSize.bind(this);
@@ -178,7 +179,7 @@ class App extends React.Component {
 
 // CHECK IF ALL SHIPS HAVE SUNK
 checkWinner() {
-
+  console.log('you initiated the checkWinner sequence');
 }
 
 // PLAYER SHIP HIT LOGIC HERE =====================================================================
@@ -195,8 +196,43 @@ handleHit(ship,hpBlock) {
 }
 
 // AI SHIP HIT LOGIC HERE ==========================================================================
-handleEnemyHit(x,y) {
-  console.log(x,y);
+handleEnemyHit(x,y,ship) {
+  //if we hit a ship we get another shot
+  if (ship) {
+    console.log(x,y);
+    console.log(ship);
+    //find the hpBlock that's got hit
+    let blockThatGotHit = ship.blocks.filter(block => {
+      return (block.x === x && block.y === y );
+    })[0];
+
+    //we make sure it has a hit mark
+    blockThatGotHit.isHit = true;
+
+    //check if the ship has not sunk
+    if (ship.blocks.every((x) => x.isHit === true )) {
+      console.log('the ship has sunk');
+    }
+    this.setState({
+      turn: 'player'
+    })
+
+    this.checkWinner();
+
+  } else {
+    console.log(`${x},${y} MISS`);
+
+    this.setState({
+      turn: 'ai'
+    })
+  }
+}
+
+
+componentDidUpdate() {
+    if (this.state.turn === 'ai') {
+      console.log('turn has been changed to ai now we can pick coords and shoot the player');
+    }
 }
 
   render() {

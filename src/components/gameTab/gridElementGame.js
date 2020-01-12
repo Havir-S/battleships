@@ -32,8 +32,8 @@ class GridGameEnemyShipElement extends React.Component {
     let gridElement;
 
     gridElement = <div data-coords={`${this.props.coordX},${this.props.coordY}`}
-                  className="square shipEnemy"
-                  onClick={(x) => this.props.handleEnemyHit(this.props.coordX, this.props.coordY)}
+                  className={`square shipEnemy ${this.props.additionalClass}`}
+                  onClick={(x) => this.props.handleEnemyHit(this.props.coordX, this.props.coordY, this.props.ship)}
                   >
                   {`${this.props.coordX},${this.props.coordY}`}
                   </div>
