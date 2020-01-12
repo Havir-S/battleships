@@ -147,7 +147,7 @@ class App extends React.Component {
 
   //SPAWNING SHIPS FOR AI
   handleAiDeployedShips(x) {
-
+    console.log(x);
   }
 
 // CHECK IF ALL SHIPS HAVE SUNK
@@ -169,8 +169,8 @@ handleHit(ship,hpBlock) {
 }
 
 // AI SHIP HIT LOGIC HERE ==========================================================================
-handleEnemyHit(x) {
-  console.log(x);
+handleEnemyHit(x,y) {
+  console.log(x,y);
 }
 
   render() {

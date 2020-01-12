@@ -20,21 +20,22 @@ class ShipClass {
     this.healthNumber = healthNumber;
     this.blocks = [];
     this.deployed = false;
-    this.sayAll = this.sayAll.bind(this);
     this.changeValue = this.changeValue.bind(this);
+    this.blockSet = this.blockSet.bind(this);
   }
-  sayAll() {
-    console.log(this);
-    console.log(`${this.name} ${this.healthNumber}`)
-    console.log(this.blocks);
-  }
+
   changeValue(key,value) {
     this[key] = value;
   }
 
   //this is where we set the hp
-  blockSet(firstCoord,direction,playerDeployedShips,maxValues) {
+  blockSet(firstCoord,direction,deployedShips,maxValues,isAi) {
 
+    if (isAi) {
+      console.log('ding');
+    }else {
+      console.log('dong');
+    }
     let coords = firstCoord.split(",");
     let coordX = coords[0];
     let coordY = coords[1];
@@ -67,7 +68,7 @@ class ShipClass {
       let coordX = thisBlock.x;
       let coordY = thisBlock.y;
       //checking for all the deployed ships
-    for (let ship of playerDeployedShips) {
+    for (let ship of deployedShips) {
 
       //checking the deployed ships coords
       for (let blocks of ship.blocks) {

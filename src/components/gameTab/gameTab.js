@@ -11,12 +11,26 @@ export default class GameTab extends React.Component {
 
   componentDidMount() {
     //we create a set of randomly generated ships placed randomly
-    console.log(this.props.shipsForAi);
-    this.setState({
-      hi: 'hoho'
-    })
-  }
+    // console.log(this.props.shipsForAi);
+    let newAiShips = [];
 
+    //making a new array just in case
+    let shipsForAi = this.props.shipsForAi.slice();
+
+    //Create as many enemy ships as the player has
+    for (let ship of shipsForAi) {
+      //Fully random 50/50 direction pick
+      let directionFlip = Math.round(Math.random()) === 0 ? 'x' : 'y';
+      //Max values of the map
+      let {x, y} = this.props.maxValues;
+      let randomX = Math.round(Math.random() * x);
+      let randomY = Math.round(Math.random() * y);
+      //Picking values for the
+      ship.blockSet(`${randomX},${randomY}`, directionFlip, shipsForAi, this.props.maxValues,true)
+    }
+    // this.props.handleAiDeployedShips(newAiShips);
+    // console.log(this.props.shipsForAi);
+  }
 
 
   render() {

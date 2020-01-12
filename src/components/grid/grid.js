@@ -89,7 +89,7 @@ export default class Grid extends React.Component {
       //we create the HP BLOCKS inside the Ship class
       let firstCoord = x.target.getAttribute('data-coords');
       //Here we check for the overlapping ships === this function returns TRUE if everything is right and we can proceed further
-      if (this.state.choosenShipClass.blockSet(firstCoord, this.state.deploymentDirection, this.props.playerDeployedShips, this.props.maxValues)) {
+      if (this.state.choosenShipClass.blockSet(firstCoord, this.state.deploymentDirection, this.props.playerDeployedShips, this.props.maxValues,false)) {
         //we make it deployed, therefore it will appear on the grid
         this.state.choosenShipClass.changeValue('deployed',true);
 
