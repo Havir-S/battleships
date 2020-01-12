@@ -84,36 +84,29 @@ constructor(props) {
 
       for (var k = 0; k < squares.length; k++) {
         let [ squareCoordX, squareCoordY ] = squares[k].key.split(",");
-      //we check all the ships
-      for (let ship of this.props.aiDeployedShips) {
-        // check all the hpblocks
-        for (let hpBlock of ship.blocks) {
-          let {x, y} = hpBlock;
-          if (x === Number(squareCoordX) && y === Number(squareCoordY)) {
-            let shipHpBar = <GridGameEnemyShipElement key={`${x},${y}`}
-                                                 coordX={x}
-                                                 coordY={y}
-                                                 currentHpBlock={hpBlock}
-                                                 handleHit={this.props.handleHit}
-                                                 ship={ship}
-            />;
 
-            squares.splice(squares.indexOf(squares[k]),1,shipHpBar);
+        //check all the ai deployed ships
+        for (let aiDeployedShip of this.props.aiDeployedShips) {
+
+          for (let hpBar of aiDeployedShip.blocks) {
+            let {x, y} = hpBar;
+            if (x === Number(squareCoordX) && y === Number(squareCoordY)) {
+              let aiShipHpBar = <GridGameEnemyShipElement key={`${x},${y}`}
+                                                          coordX={x}
+                                                          coordY={y}
+                                                          handleEnemyHit={this.props.handleEnemyHit}
+              />
+              squares.splice(squares.indexOf(squares[k]),1,aiShipHpBar);
+            }
           }
         }
-      }
+
     }
 
       gridPlayerClass = 'ai';
-      console.log(this.props.playerDeployedShips);
-      console.log(this.props.aiDeployedShips);
+      // console.log(this.props.playerDeployedShips);
+      // console.log(this.props.aiDeployedShips);
     }
-
-
-
-
-
-
 
     return (
       <>

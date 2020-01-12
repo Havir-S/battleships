@@ -34,6 +34,7 @@ class ShipClass {
     let coordX = coords[0];
     let coordY = coords[1];
     let hpBar;
+    this.blocks = [];
 
     if (direction === 'x') {
       for (let i = 0; i < this.healthNumber; i++) {
@@ -62,9 +63,7 @@ class ShipClass {
       let coordX = thisBlock.x;
       let coordY = thisBlock.y;
       //checking for all the deployed ships
-      console.log(thisBlock);
       if(thisBlock.x > maxValues.x || thisBlock.y > maxValues.y) {
-        console.log('nah');
         this.blocks = [];
         return false;
       }

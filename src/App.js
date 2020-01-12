@@ -43,11 +43,13 @@ class App extends React.Component {
     this.checkWinner = this.checkWinner.bind(this);
     this.handleEnemyHit = this.handleEnemyHit.bind(this);
     this.handleAiDeployedShips = this.handleAiDeployedShips.bind(this);
+    this.handleAiShips = this.handleAiShips.bind(this);
   }
 
   componentDidMount() {
     this.setState({
       playerShips: CreateShipObjects(SETTINGS.ships),
+      aiShips: CreateShipObjects(SETTINGS.ships)
     })
   }
 
@@ -75,7 +77,8 @@ class App extends React.Component {
     });
 
     this.setState({
-      playerShips: CreateShipObjects(newShips)
+      playerShips: CreateShipObjects(newShips),
+      aiShips: CreateShipObjects(newShips)
     });
   }
 
@@ -149,7 +152,21 @@ class App extends React.Component {
     });
   }
 }
+
   //SPAWNING SHIPS FOR AI
+  handleAiShips(aiShipToDeploy) {
+    let newArr = this.state.aiDeployedShips;
+    aiShipToDeploy.deployed = true;
+    newArr.push(aiShipToDeploy);
+    this.setState({
+      aiDeployedShips: newArr
+    });
+    // this.setState({
+    // aiShips: aiShipsArr
+    // })
+  }
+
+  //DEPLOYING SHIPS FOR AI
   handleAiDeployedShips(x, action) {
     let newArr = this.state.aiDeployedShips;
     newArr.push(x);
@@ -271,13 +288,14 @@ handleEnemyHit(x,y) {
                  playerDeployedShips={this.state.playerDeployedShips}
 
                  handleAiDeployedShips={this.handleAiDeployedShips}
+                 handleAiShips={this.handleAiShips}
+                 aiShips={this.state.aiShips}
+                 aiDeployedShips={this.state.aiDeployedShips}
 
                  maxValues={this.state.field}
                  startValues={this.state.startValues}
                  staticValues={STATICVALUES}
 
-                 shipsForAi={this.state.aiShips}
-                 aiDeployedShips={this.state.aiDeployedShips}
 
                  handleHit={this.handleHit}
                  handleEnemyHit={this.handleEnemyHit}
