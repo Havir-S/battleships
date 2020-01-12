@@ -140,6 +140,7 @@ class App extends React.Component {
   } else if (action === 'remove') {
     //we make sure the ship shows up in the hangar again
     x.deployed = false;
+    x.blocks = [];
     //we delete it from the deployed ships array
     let newArr = this.state.playerDeployedShips;
     newArr.splice(newArr.indexOf(x),1);
@@ -165,17 +166,15 @@ checkWinner() {
 
 // PLAYER SHIP HIT LOGIC HERE =====================================================================
 handleHit(ship,hpBlock) {
-
   if(!hpBlock.isHit) {
-
-    hpBlock.isHit = true;
     let newArr = this.state.playerDeployedShips;
-
+    hpBlock.isHit = true;
 
     this.setState({
       playerDeployedShips: newArr
     });
-  }
+}
+  // newArr.indexOf(ship)
 }
 
 // AI SHIP HIT LOGIC HERE ==========================================================================

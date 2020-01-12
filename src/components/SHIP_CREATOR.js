@@ -21,7 +21,7 @@ class ShipClass {
     this.blocks = [];
     this.deployed = false;
     this.changeValue = this.changeValue.bind(this);
-
+    this.blockSet = this.blockSet.bind(this);
   }
 
   changeValue(key,value) {
@@ -29,9 +29,7 @@ class ShipClass {
   }
 
   //this is where we set the hp
-  blockSet(firstCoord,direction,deployedShips,maxValues,isAi) {
-
-
+  blockSet(firstCoord,direction,deployedShips,maxValues) {
     let coords = firstCoord.split(",");
     let coordX = coords[0];
     let coordY = coords[1];
@@ -64,6 +62,12 @@ class ShipClass {
       let coordX = thisBlock.x;
       let coordY = thisBlock.y;
       //checking for all the deployed ships
+      console.log(thisBlock);
+      if(thisBlock.x > maxValues.x || thisBlock.y > maxValues.y) {
+        console.log('nah');
+        this.blocks = [];
+        return false;
+      }
     for (let ship of deployedShips) {
 
       //checking the deployed ships coords
@@ -73,8 +77,6 @@ class ShipClass {
           this.blocks = [];
           return false;
         }
-
-
       }
     }
   }

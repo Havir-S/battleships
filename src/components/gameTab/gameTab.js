@@ -11,7 +11,6 @@ export default class GameTab extends React.Component {
 
   componentDidMount() {
 
-
   }
 
 

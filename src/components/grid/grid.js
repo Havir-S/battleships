@@ -216,6 +216,8 @@ export default class Grid extends React.Component {
       </div>
     )})
 
+    console.log(this.props.playerDeployedShips);
+
     return (
       <>
         <div className="grid" style={{gridTemplate:`repeat(${x}, 1fr) / repeat(${y}, 1fr)`}}>
