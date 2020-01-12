@@ -13,9 +13,9 @@ export default class GameTab extends React.Component {
     //we create a set of randomly generated ships placed randomly
     // console.log(this.props.shipsForAi);
     let newAiShips = [];
-
+  
     //making a new array just in case
-    let shipsForAi = this.props.shipsForAi.slice();
+    let shipsForAi = this.props.shipsForAi.splice();
 
     //Create as many enemy ships as the player has
     for (let ship of shipsForAi) {
@@ -34,6 +34,8 @@ export default class GameTab extends React.Component {
 
 
   render() {
+
+    console.log(this.props.playerDeployedShips);
 
     return (
     <>

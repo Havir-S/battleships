@@ -21,7 +21,7 @@ class ShipClass {
     this.blocks = [];
     this.deployed = false;
     this.changeValue = this.changeValue.bind(this);
-    this.blockSet = this.blockSet.bind(this);
+
   }
 
   changeValue(key,value) {
@@ -31,11 +31,7 @@ class ShipClass {
   //this is where we set the hp
   blockSet(firstCoord,direction,deployedShips,maxValues,isAi) {
 
-    if (isAi) {
-      console.log('ding');
-    }else {
-      console.log('dong');
-    }
+
     let coords = firstCoord.split(",");
     let coordX = coords[0];
     let coordY = coords[1];

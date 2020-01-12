@@ -157,15 +157,17 @@ checkWinner() {
 
 // PLAYER SHIP HIT LOGIC HERE =====================================================================
 handleHit(ship,hpBlock) {
+
   if(!hpBlock.isHit) {
-    let newArr = this.state.playerDeployedShips;
+
     hpBlock.isHit = true;
+    let newArr = this.state.playerDeployedShips;
+
 
     this.setState({
       playerDeployedShips: newArr
     });
-}
-  // newArr.indexOf(ship)
+  }
 }
 
 // AI SHIP HIT LOGIC HERE ==========================================================================
