@@ -31,6 +31,7 @@ class App extends React.Component {
       currentViewedTab: tabsInOrder[0],
       actionsHistory: [],
       turn: 'player',
+      alreadyShotByAi: [],
       allShipsHp: 0,
     }
     this.shipChange = this.shipChange.bind(this);
@@ -230,8 +231,62 @@ handleEnemyHit(x,y,ship) {
 
 
 componentDidUpdate() {
+    //this is where the AI TURN HAPPENS
     if (this.state.turn === 'ai') {
-      console.log('turn has been changed to ai now we can pick coords and shoot the player');
+      console.log('turn has been changed to ai, now we can pick coords and shoot the player');
+      console.log(this.state.field);
+      let randomX, randomY;
+
+      do {
+        randomX = Math.ceil(Math.random() * this.state.field.x );
+        randomY = Math.ceil(Math.random() * this.state.field.y );
+      } while (this.state.playerDeployedShips.filter(el => (el[0] === randomX && el[1] === randomY)).length)
+
+      console.log(randomX, randomY);
+
+      let newArr;
+      //check if hit any ships
+      for (let playerShip of this.state.playerDeployedShips) {
+        let hitGrid = playerShip.blocks.filter(hpBar => (hpBar.x === randomX && hpBar.y === randomY))[0];
+        //if we found it
+        if (hitGrid) {
+          console.log(hitGrid);
+          hitGrid.isHit = true;
+          console.log('found it!');
+
+          newArr = this.state.alreadyShotByAi;
+          newArr.push( [randomX, randomY] );
+
+          //the hit so now they can take another shot
+          this.setState({
+            turn: 'ai',
+            alreadyShotByAi: newArr
+          })
+          return;
+        }
+      }
+
+      newArr = this.state.alreadyShotByAi;
+      newArr.push( [randomX, randomY] );
+
+      console.log(`AI MISSED with coords ${randomX},${randomY}`);
+      this.setState({
+        turn: 'player',
+        alreadyShotByAi: newArr
+      })
+
+      console.log(this.state.alreadyShotByAi);
+
+
+    //   if(!hpBlock.isHit) {
+    //     let newArr = this.state.playerDeployedShips;
+    //     hpBlock.isHit = true;
+    //
+    //     this.setState({
+    //       playerDeployedShips: newArr
+    //     });
+    // }
+
     }
 }
 

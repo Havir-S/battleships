@@ -66,7 +66,6 @@ class GridGameShipElement extends React.Component {
       //if the ship is safe and has not been hit
       gridElement = <div data-coords={`${this.props.coordX},${this.props.coordY}`}
                     className="square ship"
-                    onClick={() => this.props.handleHit( this.props.ship, this.props.currentHpBlock )}
                     >
                     {`${this.props.coordX},${this.props.coordY}`}
                     </div>
