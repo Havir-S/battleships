@@ -1,6 +1,7 @@
 import React from 'react';
 import GridGame from './gridGame.js';
 import {CreateShipObjects} from '../SHIP_CREATOR.js';
+import HistoryTab from './historyTab.js';
 
 export default class GameTab extends React.Component {
   constructor(props) {
@@ -63,6 +64,7 @@ export default class GameTab extends React.Component {
                type="button">
                Go back
        </button>
+       <HistoryTab history={this.props.history} />
     </>
   )
   }

@@ -26,7 +26,6 @@ class GridElementShip extends React.Component {
   }
 
   render() {
-
     return (
       <div data-coords={`${this.props.coordX},${this.props.coordY}`}
                     className="square ship"
@@ -49,7 +48,8 @@ export default class Grid extends React.Component {
     this.state = {
       choosenShipDiv: "",
       choosenShipClass: "",
-      deploymentDirection: "x"
+      deploymentDirection: "x",
+      shipHp: 1,
     }
     this.assignShip = this.assignShip.bind(this);
     this.handleShipClick = this.handleShipClick.bind(this);
@@ -64,7 +64,8 @@ export default class Grid extends React.Component {
     e.target.classList.add('choosenShip');
     this.setState({
       choosenShipDiv: e.target,
-      choosenShipClass: x
+      choosenShipClass: x,
+      shipHp: x.healthNumber
     });
   }
 
@@ -93,7 +94,7 @@ export default class Grid extends React.Component {
       //we create the HP BLOCKS inside the Ship class
       let firstCoord = x.target.getAttribute('data-coords');
       //Here we check for the overlapping ships === this function returns TRUE if everything is right and we can proceed further
-      if (this.state.choosenShipClass.blockSet(firstCoord, this.state.deploymentDirection, this.props.playerDeployedShips, this.props.maxValues,false)) {
+      if (this.state.choosenShipClass.blockSet(firstCoord, this.state.deploymentDirection, this.props.playerDeployedShips, this.props.maxValues)) {
         //we make it deployed, therefore it will appear on the grid
         this.state.choosenShipClass.changeValue('deployed',true);
 
@@ -165,6 +166,8 @@ export default class Grid extends React.Component {
           if (x === Number(squareCoordX) && y === Number(squareCoordY)) {
             //we create a replacement for the empty grid
             let shipHpBar = <GridElementShip key={`${x},${y}`}
+                                             coordX={x}
+                                             coordY={y}
                                              handleShipClick={this.handleShipClick}
                                              ship={deployedShip}
 
@@ -216,9 +219,16 @@ export default class Grid extends React.Component {
       </div>
     )})
 
+    let classWhenPlacing = (this.state.choosenShipDiv) ? 'grid-while-placing' : '';
+
     return (
       <>
-        <div className="grid" style={{gridTemplate:`repeat(${x}, 1fr) / repeat(${y}, 1fr)`}}>
+        <div className={`grid ${classWhenPlacing}`}
+             style={{gridTemplate:`repeat(${x}, 1fr) / repeat(${y}, 1fr)`}}
+             data-direction={this.state.deploymentDirection}
+             data-shiphp={this.state.shipHp}
+
+        >
         <GridSide gridPosition='grid-top'
                 valueType={this.props.startValues.startY}
                 maxValues={this.props.maxValues}

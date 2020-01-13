@@ -15,7 +15,7 @@ import WelcomeTab from './components/setup/WelcomeTab.js'
 import Grid from './components/grid/grid.js';
 import GameTab from './components/gameTab/gameTab.js';
 
-let tabsInOrder = [ 'gridTab','gameTab','welcomeTab', 'shipsSettingsTab', 'sizeSettingsTab'];
+let tabsInOrder = [ 'welcomeTab','sizeSettingsTab','shipsSettingsTab','gridTab','gameTab' ];
 
 class App extends React.Component {
   constructor(props) {
@@ -32,6 +32,7 @@ class App extends React.Component {
       actionsHistory: [],
       turn: 'player',
       alreadyShotByAi: [],
+      alreadyShotByPlayer: [],
       allShipsHp: 0,
       gameEnded: false,
     }
@@ -194,12 +195,29 @@ handleHit(ship,hpBlock) {
   // newArr.indexOf(ship)
 }
 
-// AI SHIP HIT LOGIC HERE ==========================================================================
+// AI SHIP HIT LOGIC HERE (IF USER HITS) ==========================================================================
 handleEnemyHit(x,y,ship) {
+
+  //IF GAME ENDED, NO MORE CLICKING
+  if (this.state.gameEnded) {
+    console.log('no more');
+    return;
+  }
+
+  //CHECK IF WE HAVENT FIRED AT THAT GRID BEFORE
+  let hitBeforeCheck = this.state.alreadyShotByPlayer.filter(el => {
+    return (el[0] === x && el[1] === y);
+  }).length;
+
+  console.log(hitBeforeCheck);
+
+  if (hitBeforeCheck) {
+    console.log('it was hit before');
+    return;
+  }
+
   //if we hit a ship we get another shot
   if (ship) {
-    console.log(x,y);
-    console.log(ship);
     //find the hpBlock that's got hit
     let blockThatGotHit = ship.blocks.filter(block => {
       return (block.x === x && block.y === y );
@@ -217,20 +235,34 @@ handleEnemyHit(x,y,ship) {
     //save the outcome
     let newHistory = this.state.actionsHistory;
     newHistory.push(`Player shoots and hits at ${x},${y}!`);
+
+    //so we can no longer hit it in the future
+    let newArr = this.state.alreadyShotByPlayer;
+    newArr.push( [x, y] );
+
     this.setState({
       turn: 'player',
-      actionsHistory: newHistory
+      actionsHistory: newHistory,
+      alreadyShotByPlayer: newArr
     })
 
 
 
   } else {
+    //IF we hit a random empty space
+
+    //save the outcome
     let newHistory = this.state.actionsHistory;
     newHistory.push(`Player misses at ${x},${y}!`);
 
+    //so we can no longer hit it in the future
+    let newArr = this.state.alreadyShotByPlayer;
+    newArr.push( [x, y] );
+
     this.setState({
       turn: 'ai',
-      actionsHistory: newHistory
+      actionsHistory: newHistory,
+      alreadyShotByPlayer: newArr
     })
   }
 }
@@ -238,6 +270,13 @@ handleEnemyHit(x,y,ship) {
 
 // CHECK IF ALL SHIPS HAVE SUNK
 checkWinner() {
+
+  //no more clicking after the game is over
+  if (this.state.gameEnded) {
+    console.log('no more');
+    return;
+  }
+
   //check player ships
   console.log(this.state.playerDeployedShips);
   //check if all player blocks have been hit
@@ -269,6 +308,13 @@ checkWinner() {
 }
 
 componentDidUpdate() {
+
+  //IF GAME ENDED, NO MORE CLICKING
+  if (this.state.gameEnded) {
+    console.log('no more');
+    return;
+  }
+
     //this is where the AI TURN HAPPENS
     if (this.state.turn === 'ai') {
       console.log('turn has been changed to ai, now we can pick coords and shoot the player');
@@ -334,7 +380,6 @@ componentDidUpdate() {
 
 
   render() {
-    console.log(this.state.actionsHistory);
     let currentTab;
     switch (this.state.currentViewedTab) {
       case 'welcomeTab':
@@ -434,6 +479,8 @@ componentDidUpdate() {
 
                  handleHit={this.handleHit}
                  handleEnemyHit={this.handleEnemyHit}
+
+                 history={this.state.actionsHistory}
         />
 
       );

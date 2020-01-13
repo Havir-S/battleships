@@ -63,16 +63,16 @@ class ShipClass {
       let coordX = thisBlock.x;
       let coordY = thisBlock.y;
       //checking for all the deployed ships
-      if(thisBlock.x > maxValues.x || thisBlock.y > maxValues.y) {
+      if(thisBlock.x > maxValues.y || thisBlock.y > maxValues.x) {
         this.blocks = [];
         return false;
       }
     for (let ship of deployedShips) {
 
       //checking the deployed ships coords
-      for (let blocks of ship.blocks) {
-        let {x, y} = blocks;
-        if ((x === coordX && y === coordY) || coordX > maxValues.x || coordY > maxValues.y) {
+      for (let block of ship.blocks) {
+        let {x, y} = block;
+        if ((x === coordX && y === coordY) || coordX > maxValues.y || coordY > maxValues.x) {
           this.blocks = [];
           return false;
         }

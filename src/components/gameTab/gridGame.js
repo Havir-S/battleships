@@ -126,7 +126,7 @@ constructor(props) {
 
     return (
       <>
-      <div className={`game-grid ${gridPlayerClass}`}>
+      <div className={`game-grid ${gridPlayerClass}`} style={{gridTemplate: `repeat(${this.props.maxValues.x}, 1fr) / repeat(${this.props.maxValues.y}, 1fr)`}}>
        {(() => {
 
        })()}

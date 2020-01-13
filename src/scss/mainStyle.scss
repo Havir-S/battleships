@@ -16,6 +16,14 @@ header {
   display: inline-block;
 }
 
+.history-tab {
+  .miss {
+    color: green;
+  }
+  .hit {
+    color: blue;
+  }
+}
 .grid {
   display: grid;
   border: 2px solid green;
@@ -61,6 +69,17 @@ header {
   }
 }
 
+.grid-while-placing {
+  .square:hover {
+    background: yellow;
+    transition: background .15s;
+  }
+  .ship:hover {
+    background: lighten(red,10%);
+    transition: background .15s;
+  }
+}
+
 .grid-preview {
   display: inline-grid;
   border: 3px solid red;
@@ -75,6 +94,9 @@ header {
 
 .ship {
   background: green;
+}
+.ship:hover {
+  background: darken(yellow,10%);
 }
 .squareEnemy {
   background: darken(darkgreen,10%);
