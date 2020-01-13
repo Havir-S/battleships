@@ -33,6 +33,7 @@ class App extends React.Component {
       turn: 'player',
       alreadyShotByAi: [],
       allShipsHp: 0,
+      gameEnded: false,
     }
     this.shipChange = this.shipChange.bind(this);
     this.gridChangeSize = this.gridChangeSize.bind(this);
@@ -178,10 +179,7 @@ class App extends React.Component {
 
   }
 
-// CHECK IF ALL SHIPS HAVE SUNK
-checkWinner() {
-  console.log('you initiated the checkWinner sequence');
-}
+
 
 // PLAYER SHIP HIT LOGIC HERE =====================================================================
 handleHit(ship,hpBlock) {
@@ -213,36 +211,80 @@ handleEnemyHit(x,y,ship) {
     //check if the ship has not sunk
     if (ship.blocks.every((x) => x.isHit === true )) {
       console.log('the ship has sunk');
+      this.checkWinner();
     }
+
+    //save the outcome
+    let newHistory = this.state.actionsHistory;
+    newHistory.push(`Player shoots and hits at ${x},${y}!`);
     this.setState({
-      turn: 'player'
+      turn: 'player',
+      actionsHistory: newHistory
     })
 
-    this.checkWinner();
+
 
   } else {
-    console.log(`${x},${y} MISS`);
+    let newHistory = this.state.actionsHistory;
+    newHistory.push(`Player misses at ${x},${y}!`);
 
     this.setState({
-      turn: 'ai'
+      turn: 'ai',
+      actionsHistory: newHistory
     })
   }
 }
 
 
+// CHECK IF ALL SHIPS HAVE SUNK
+checkWinner() {
+  //check player ships
+  console.log(this.state.playerDeployedShips);
+  //check if all player blocks have been hit
+  let allBlocksPlayer = this.state.playerDeployedShips.filter((el) => {
+    return el.blocks.every((el) => el.isHit === true);
+  });
+  console.log(allBlocksPlayer);
+  if (allBlocksPlayer.length === this.state.playerDeployedShips.length) {
+    console.log('all of player ships are hit, ai wins');
+    this.setState({
+      gameEnded: true
+    })
+    return;
+  }
+
+  //check ai ships
+  let allBlocksAi = this.state.aiDeployedShips.filter((el) => {
+    return el.blocks.every((el) => el.isHit === true);
+  });
+  console.log(allBlocksAi);
+
+  if (allBlocksAi.length === this.state.aiDeployedShips.length) {
+    console.log('player won');
+    this.setState({
+      gameEnded: true
+    })
+    return;
+  }
+}
+
 componentDidUpdate() {
     //this is where the AI TURN HAPPENS
     if (this.state.turn === 'ai') {
       console.log('turn has been changed to ai, now we can pick coords and shoot the player');
-      console.log(this.state.field);
       let randomX, randomY;
+
+      //make sure we don't end up in a loop
+      if (this.state.alreadyShotByAi.length === (this.state.field.x * this.state.field.y)) {
+        console.log('reached max guesses');
+        return;
+      }
 
       do {
         randomX = Math.ceil(Math.random() * this.state.field.x );
         randomY = Math.ceil(Math.random() * this.state.field.y );
-      } while (this.state.playerDeployedShips.filter(el => (el[0] === randomX && el[1] === randomY)).length)
+      } while (this.state.alreadyShotByAi.filter(el => (el[0] === randomX && el[1] === randomY)).length)
 
-      console.log(randomX, randomY);
 
       let newArr;
       //check if hit any ships
@@ -250,47 +292,49 @@ componentDidUpdate() {
         let hitGrid = playerShip.blocks.filter(hpBar => (hpBar.x === randomX && hpBar.y === randomY))[0];
         //if we found it
         if (hitGrid) {
-          console.log(hitGrid);
           hitGrid.isHit = true;
-          console.log('found it!');
 
+          //WE MAKE SURE THOSE COORDS WONT BE HIT IN THE FUTURE SO WE SAVE THEM
           newArr = this.state.alreadyShotByAi;
           newArr.push( [randomX, randomY] );
 
-          //the hit so now they can take another shot
+          //ALSO MAKINGA COMMENT ABOUT THE ACTIONS
+          let newHistory = this.state.actionsHistory;
+          newHistory.push(`Ai shoots and hits at ${randomX},${randomY}!`);
+
+          this.checkWinner();
+          //they hit, so now they can take another shot
           this.setState({
             turn: 'ai',
-            alreadyShotByAi: newArr
+            alreadyShotByAi: newArr,
+            actionsHistory: newHistory
           })
           return;
         }
       }
 
+      //WE MAKE SURE THOSE COORDS WONT BE HIT IN THE FUTURE SO WE SAVE THEM
       newArr = this.state.alreadyShotByAi;
       newArr.push( [randomX, randomY] );
 
-      console.log(`AI MISSED with coords ${randomX},${randomY}`);
+      //ALSO MAKINGA COMMENT ABOUT THE ACTIONS
+      let newHistory = this.state.actionsHistory;
+      newHistory.push(`Ai MISSES at ${randomX},${randomY}!`);
+
+      // console.log(`AI MISSED with coords ${randomX},${randomY}`);
       this.setState({
         turn: 'player',
-        alreadyShotByAi: newArr
+        alreadyShotByAi: newArr,
+        actionsHistory: newHistory
       })
-
-      console.log(this.state.alreadyShotByAi);
-
-
-    //   if(!hpBlock.isHit) {
-    //     let newArr = this.state.playerDeployedShips;
-    //     hpBlock.isHit = true;
-    //
-    //     this.setState({
-    //       playerDeployedShips: newArr
-    //     });
-    // }
 
     }
 }
 
+
+
   render() {
+    console.log(this.state.actionsHistory);
     let currentTab;
     switch (this.state.currentViewedTab) {
       case 'welcomeTab':
