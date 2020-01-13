@@ -221,6 +221,9 @@ export default class Grid extends React.Component {
 
     let classWhenPlacing = (this.state.choosenShipDiv) ? 'grid-while-placing' : '';
 
+    console.log(this.props.playerDeployedShips);
+    console.log(this.props.playerShips);
+
     return (
       <>
         <div className={`grid ${classWhenPlacing}`}
@@ -245,6 +248,7 @@ export default class Grid extends React.Component {
 
       </div>
       <button onClick={() => this.props.changeCurrentViewedTab(this.props.currentViewedTab,'add')}
+              disabled={(this.props.playerDeployedShips.length === this.props.playerShips.length) ? false : true}
               type="button">
               Go forward
       </button>

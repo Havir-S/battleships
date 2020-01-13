@@ -56,14 +56,6 @@ export default class GameTab extends React.Component {
         />
 
       </div>
-       <button onClick={() => this.props.changeCurrentViewedTab(this.props.currentViewedTab,'add')}
-               type="button">
-               Go forward
-       </button>
-       <button onClick={() => this.props.changeCurrentViewedTab(this.props.currentViewedTab,'subtract')}
-               type="button">
-               Go back
-       </button>
        <HistoryTab history={this.props.history} />
     </>
   )
