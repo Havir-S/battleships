@@ -1,14 +1,16 @@
-* {
-  color: red;
-  box-sizing: border-box;
+@import './_reset.scss';
+@import './_animations.scss';
 
+* {
+  box-sizing: border-box;
+  color: #33ff69;
 }
 header {
   color: red
 }
 
-.setup-screen {
-  border: 3px solid green;
+.setup-tab {
+
   // pointer-events: none; WYLACZA WSZYSTKIE EVENTSY
 }
 
@@ -24,6 +26,337 @@ header {
     color: blue;
   }
 }
+body {
+  background: black;
+  background-image: url('../imgs/backgroundWater.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0% 50%;
+  animation: bodyAnimation 2s forwards;
+  height: 100vh;
+}
+
+button {
+  margin: 15px auto 0;
+  background: black;
+  background: rgba(0,0,0,.4);
+  padding: 5px 10px;
+  border-radius: 25%;
+  font-size: 20px;
+  outline: 0;
+  border: 4px double #33ff69;
+  box-shadow: 0 0 2px 1px darken(#33ff69,20%), 0 0 3px darken(#33ff69,20%) inset;
+  transition: all .3s;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 0 4px 2px #33ff69, 0 0 5px 2px #33ff69 inset;
+  }
+}
+// NAV CONTAINER =======================================================
+.nav-container {
+  background: grey;
+  display: block;
+  background-image: url('../imgs/repeated-square-dark.png');
+  background-size: 25%;
+  .main-nav {
+    display: flex;
+    justify-content: space-between;
+    font-size: 30px;
+    .logo-div, .author-div {
+      margin: 5px;
+      padding: 16px;
+
+    }
+    .logo-div {
+      position: relative;
+      margin-left: 55px;
+      background-image: url('../imgs/5-dots.png');
+      @include opacityAn(.3s);
+      .logo-text {
+        display: block;
+        color: green;
+        @include text-shadow;
+        position: relative;
+        font-size: 33px;
+      }
+      .logo-ship {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 100px;
+      }
+      .mini-soldier {
+        position: absolute;
+        top: 50%;
+        width: 60px;
+        transform: translate(0, -50%);
+      }
+      .mini-soldier-left {
+        left:-50px;
+      }
+      .mini-soldier-right {
+        right: -50px;
+      }
+    }
+    .author-div {
+      color: red;
+      background: rgba(0,0,0,.2);
+      background-image: url('../imgs/5-dots.png');
+      position: relative;
+      z-index: 10;
+      width: 155px;
+      text-align: center;
+      .author {
+        position: relative;
+        z-index: 10;
+        span {
+          display: inline-block;
+        }
+        .arrow {
+          position: absolute;
+          top: 50%;
+          transform: translate(0, -50%) rotate(0deg);
+          transition: all .1s ease-in-out;
+          right: -3px;
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          background-image: url('../imgs/down-arrow.svg');
+        }
+      }
+      .author-links {
+        display: none;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        top: 100%;
+        z-index: 3;
+        @include fromTop(.2s);
+        .author-link-container {
+          background: orange;
+          border-bottom: 3px solid green;
+          z-index: 3;
+        }
+        .author-link-container:last-of-type {
+          border-bottom: 0;
+        }
+      }
+    }
+    .author-div.open {
+      .arrow {
+        transform: translate(0,-50%) rotate(180deg);
+        transition: all .2s ease-in-out;
+      }
+      .author-links {
+        display: block;
+      }
+    }
+
+  }
+}
+// MIDDLE BAR ==========================================================
+.gearIcon{
+  width: 50px;
+  padding: 3px;
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 50px;
+  border-radius: 35%;
+  border: 4px double #33ff69;
+  @supports (filter: drop-shadow(3px 0 #33ff69)) {
+    filter: drop-shadow(0 0 0 darken(#33ff69,20%));
+  }
+  cursor: pointer;
+  transform: rotate(0deg);
+  transition: all .2s;
+  &:hover {
+    padding: 6px;
+    @supports (filter: drop-shadow(3px 0 #33ff69)) {
+      filter: drop-shadow(0 0 3px darken(#33ff69,20%));
+    }
+    @include keepRotating;
+  }
+}
+.middle-bar {
+  text-align: center;
+  position: relative;
+  color: white;
+  background: rgba(0,0,0,.4);
+  width: 100%;
+  padding: 30px;
+  @supports (backdrop-filter: blur(3px)) {
+    backdrop-filter: blur(10px);
+  }
+  margin-top: 200px;
+  .middle-bar-content {
+    position: relative;
+    margin: auto;
+    width: 65vw;
+
+    text-align: left;
+    border: 3px double #33ff69;
+    box-shadow: 0 0 15px #33ff69 inset, 0 0 22px 1px #33ff69;
+    background: rgba(0,0,0,.3);
+    @include lightWave;
+    border-radius: 100px;
+    transition: all .3s ease-out;
+    &:hover {
+      color: red;
+    }
+    .middle {
+      margin: 20px;
+      padding: 20px;
+      border-radius: 25%;
+      background: rgba(0,0,0,.5);
+      border: 3px double #33ff69;
+      box-shadow: 0 0 15px 8px #33ff69, 0 0 15px #33ff69 inset;
+      transition: all .3s ease-out;
+      position: relative;
+      @include lightWave2;
+    }
+
+    .tab-title {
+      position: absolute;
+      background: rgba(0,0,0,.4);
+      width: 100%;
+      bottom: 100%;
+      left: 0;
+      text-align: center;
+      font-size: 40px;
+
+    }
+  }
+}
+
+// =====================================================================
+
+.App {
+  color: blue;
+  // ======================================================WELCOME TAB
+  .welcome-tab {
+    .middle-bar {
+      padding: 35px;
+      .middle-bar-content {
+        max-width: 550px;
+        padding: 15px;
+        .middle {
+          padding: 25px 50px 50px;
+          button {
+            display: block;
+          }
+          h2 {
+            color: #33ff69;
+            @include text-shadow;
+            font-size: 20px;
+            margin: 3px auto;
+            text-align: center;
+            .logo {
+              color: green;
+              @include text-shadow;
+              font-size: 40px;
+              border-bottom: 4px double #33ff69;
+
+              display: inline-block;
+              margin-bottom: 15px;
+              border-radius: 0 0 5% 5%;
+            }
+          }
+          ul {
+            list-style: none;
+            li {
+              margin: 5px 0;
+              text-indent: 10px;
+            }
+            li::before {
+              content:'';
+              width: 15px;
+              vertical-align: baseline;
+              margin-right: 5px;
+              height: 15px;
+              display: inline-block;
+              background: url('../imgs/steering-wheel.svg');
+
+            }
+          }
+          p {
+            color: orange;
+          }
+          .info p {
+            font-size: 14px;
+            line-height: 17px;
+            text-align: center;
+            color: gold;
+          }
+        }
+      }
+    }
+  }
+  .setup-tab {
+    .middle-bar {
+      .middle-bar-content {
+        width: 40vw;
+        .middle {
+          padding: 50px;
+          .setup-grid {
+            text-align: center;
+            input[type="text"] {
+              appearance: none;
+              -moz-appearance: none;
+              -webkit-appearance: none;
+              outline: none;
+              border: 0;
+              border-bottom: 2px solid #33ff69;
+              font-weight: bolder;
+              background: transparent;
+              text-align: center;
+              font-size: 25px;
+              width: 30px;
+              &:hover {
+                background: linear-gradient(0deg, transparent, rgba(200,200,200,.4));
+              }
+            }
+            .signAction {
+              font-size: 25px;
+              font-weight: bolder;
+              margin: 0 5px;
+              cursor: pointer;
+              user-select: none;
+            }
+            button {
+              margin-bottom: 10px;
+            }
+            h2 {
+              @include text-shadow;
+              margin: 3px auto 15px;
+              text-align: center;
+              font-size: 40px;
+              border-bottom: 4px double #33ff69;
+              display: block;
+              border-radius: 0 0 5% 5%;
+            }
+            .p-title {
+              position: relative;
+              font-size: 30px;
+              border-bottom: 4px double #33ff69;
+              border-radius: 0 0 5% 5%;
+              margin: 10px auto;
+              .gearIcon {
+                right: 0;
+              }
+            }
+            .p-settings {
+              margin: 5px 0;
+              font-size: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
 .grid {
   display: grid;
   border: 2px solid green;
@@ -79,16 +412,27 @@ header {
     transition: background .15s;
   }
 }
-
-.grid-preview {
-  display: inline-grid;
-  border: 3px solid red;
-  grid-auto-columns: 1fr;
-  .grid-preview-element {
-    border: 1px solid blue;
-    background: green;
-    width: 10px;
-    height: 10px;
+.grid-preview-container {
+  width: 100%;
+  text-align: center;
+  p {
+    font-size: 20px;
+    margin-bottom: 10px;
+    border-bottom: 4px double #33ff69;
+    border-radius: 0 0 15% 15%;
+  }
+  .grid-preview {
+    display: inline-grid;
+    margin: auto;
+    width: fit-content;
+    border: 2px solid #33ff69;
+    grid-auto-columns: 1fr;
+    .grid-preview-element {
+      border: 1px solid black;
+      background: #33ff69;
+      width: 10px;
+      height: 10px;
+    }
   }
 }
 
@@ -128,6 +472,7 @@ header {
     height: 30px;
     font-size: 20px;
     line-height: 30px;
+    background-image: repeating-linear-gradient(to right, #e66465, #e66465 30px, #9198e5 30px, #9198e5 35px);
   }
 }
 .game-div {

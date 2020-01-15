@@ -1,5 +1,7 @@
 import React from 'react';
 import GridSide from './gridSide.js';
+import Navbar from '../navbar.js';
+import MiddleBar from '../middleBar.js';
 
 class GridElement extends React.Component {
   constructor(props) {
@@ -114,7 +116,7 @@ export default class Grid extends React.Component {
         choosenShipClass: ""
       });
     } else {
-      console.log('no ship has been choosen so event didnt really fire');
+
     }
   }
 
@@ -196,7 +198,7 @@ export default class Grid extends React.Component {
     this.props.playerShips.filter(el => el.deployed === false).map((ship,index) => {
       ships.push(
         <div className="ship" key={index}
-                              style={{width: `${ship.healthNumber * 100}px`}}
+                              style={{width: `${(ship.healthNumber * 30) + ( (ship.healthNumber * 5) - 5)}px`}}
                               onClick={(e) => this.assignShip(e,ship)}
                               >
                               {ship.name}
@@ -221,11 +223,10 @@ export default class Grid extends React.Component {
 
     let classWhenPlacing = (this.state.choosenShipDiv) ? 'grid-while-placing' : '';
 
-    console.log(this.props.playerDeployedShips);
-    console.log(this.props.playerShips);
-
     return (
-      <>
+      <div className='grid-tab'>
+      <Navbar />
+      <MiddleBar>
         <div className={`grid ${classWhenPlacing}`}
              style={{gridTemplate:`repeat(${x}, 1fr) / repeat(${y}, 1fr)`}}
              data-direction={this.state.deploymentDirection}
@@ -267,7 +268,8 @@ export default class Grid extends React.Component {
       <div className="shipsHangar">
       {deployedShips}
       </div>
-    </>
+      </MiddleBar>
+    </div>
     )
   }
 }

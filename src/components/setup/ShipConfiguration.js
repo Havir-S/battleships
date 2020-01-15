@@ -26,15 +26,15 @@ export default class ShipConfiguration extends React.Component {
       <div>
         <span>{this.props.ship.name} </span>
 
-        <span onClick={() => this.props.shipChange('subtract', 'amount', this.props.ship.name)}>-</span>
+        <span className='signAction' onClick={() => this.props.shipChange('subtract', 'amount', this.props.ship.name)}>-</span>
         <span>amount</span>
-        <span onClick={() => this.props.shipChange('add', 'amount', this.props.ship.name)}>+ </span>
+        <span className='signAction' onClick={() => this.props.shipChange('add', 'amount', this.props.ship.name)}>+ </span>
 
         {this.props.hasAdvancedShipSettings &&
         <>
-          <span onClick={() => this.props.shipChange('subtract', 'health', this.props.ship.name)}> -</span>
+          <span className='signAction' onClick={() => this.props.shipChange('subtract', 'health', this.props.ship.name)}> -</span>
           <span>health</span>
-          <span onClick={() => this.props.shipChange('add', 'health', this.props.ship.name)}>+</span>
+          <span className='signAction' onClick={() => this.props.shipChange('add', 'health', this.props.ship.name)}>+</span>
         </>
       }
 
