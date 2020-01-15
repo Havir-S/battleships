@@ -31,8 +31,6 @@ export default class GameTab extends React.Component {
 
     }
 
-    console.log(this.props.aiDeployedShips);
-
     //AI SHIPS DEPLOYMENT PROCESS STARTS HERE =====================================
     // this.props.handleAiShips(copiedShipsForAi);
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import './scss/mainStyle.scss';
 
 //settings and constructors
@@ -41,7 +40,6 @@ class App extends React.Component {
     this.gridChangeSizeInput = this.gridChangeSizeInput.bind(this);
     this.changeCurrentViewedTab = this.changeCurrentViewedTab.bind(this);
     this.changeStartValues = this.changeStartValues.bind(this);
-    this.changePlayerShips = this.changePlayerShips.bind(this);
     this.handlePlayerDeployedShips = this.handlePlayerDeployedShips.bind(this);
     this.handleHit = this.handleHit.bind(this);
     this.checkWinner = this.checkWinner.bind(this);
@@ -69,8 +67,9 @@ class App extends React.Component {
   }
   //subtracting value
   else if (action === 'subtract') {
+    //making sure You can not go over minimal values
     if ((data === 'amount' && this.state.ships[ship][data] === 0) || (data === 'health' && this.state.ships[ship][data] === 1)) {
-      console.log('no change');
+
       return;
     }
     newShips[ship][data] -= 1;
@@ -113,6 +112,12 @@ class App extends React.Component {
   }
 
   changeCurrentViewedTab(x, action) {
+
+    //fast fix
+    if (this.state.field.x > 26 || this.state.field.y > 26) {
+      return;
+    }
+
     let newCurrentViewedTab;
     if (action === 'add') {
       newCurrentViewedTab = tabsInOrder[tabsInOrder.indexOf(x) + 1];
@@ -129,10 +134,6 @@ class App extends React.Component {
     newStartValues[e.target.name] = e.target.value;
 
     this.setState({startValues: newStartValues});
-  }
-
-  changePlayerShips(x) {
-    console.log(x);
   }
 
   // SPAWNING SHIPS START HERE ===============================================================
@@ -200,7 +201,6 @@ handleEnemyHit(x,y,ship) {
 
   //IF GAME ENDED, NO MORE CLICKING
   if (this.state.gameEnded) {
-    console.log('no more');
     return;
   }
 
@@ -209,10 +209,8 @@ handleEnemyHit(x,y,ship) {
     return (el[0] === x && el[1] === y);
   }).length;
 
-  console.log(hitBeforeCheck);
 
   if (hitBeforeCheck) {
-    console.log('it was hit before');
     return;
   }
 
@@ -273,19 +271,15 @@ checkWinner() {
 
   //no more clicking after the game is over
   if (this.state.gameEnded) {
-    console.log('no more');
     return;
   }
 
   //check player ships
-  console.log(this.state.playerDeployedShips);
   //check if all player blocks have been hit
   let allBlocksPlayer = this.state.playerDeployedShips.filter((el) => {
     return el.blocks.every((el) => el.isHit === true);
   });
-  console.log(allBlocksPlayer);
   if (allBlocksPlayer.length === this.state.playerDeployedShips.length) {
-    console.log('all of player ships are hit, ai wins');
     this.setState({
       gameEnded: true
     })
@@ -296,10 +290,8 @@ checkWinner() {
   let allBlocksAi = this.state.aiDeployedShips.filter((el) => {
     return el.blocks.every((el) => el.isHit === true);
   });
-  console.log(allBlocksAi);
 
   if (allBlocksAi.length === this.state.aiDeployedShips.length) {
-    console.log('player won');
     this.setState({
       gameEnded: true
     })
@@ -311,18 +303,15 @@ componentDidUpdate() {
 
   //IF GAME ENDED, NO MORE CLICKING
   if (this.state.gameEnded) {
-    console.log('no more');
     return;
   }
 
     //this is where the AI TURN HAPPENS
     if (this.state.turn === 'ai') {
-      console.log('turn has been changed to ai, now we can pick coords and shoot the player');
       let randomX, randomY;
 
       //make sure we don't end up in a loop
       if (this.state.alreadyShotByAi.length === (this.state.field.x * this.state.field.y)) {
-        console.log('reached max guesses');
         return;
       }
 
@@ -411,8 +400,6 @@ componentDidUpdate() {
                  currentViewedTab={this.state.currentViewedTab}
                  changeCurrentViewedTab={this.changeCurrentViewedTab}
 
-                 changePlayerShips={this.changePlayerShips}
-
           />
         );
       break;
@@ -437,8 +424,6 @@ componentDidUpdate() {
 
                  currentViewedTab={this.state.currentViewedTab}
                  changeCurrentViewedTab={this.changeCurrentViewedTab}
-
-                 changePlayerShips={this.changePlayerShips}
 
           />
         );
@@ -493,9 +478,7 @@ componentDidUpdate() {
 
   return (
     <div className="App">
-     <header className="App-header">
       {currentTab}
-     </header>
     </div>
   );
 }
