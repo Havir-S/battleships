@@ -1,6 +1,11 @@
 import React from 'react';
 import ShipConfiguration from './ShipConfiguration.js';
 import GridConfiguration from './GridConfiguration.js';
+import GridConfigurationPreview from './GridConfigurationPreview.js';
+import Navbar from '../navbar.js';
+import MiddleBar from '../middleBar.js';
+import TabTitle from '../tabTitle.js';
+import settingsIcon from '../../imgs/gear.svg';
 
 
 export default class Setup extends React.Component {
@@ -45,7 +50,9 @@ export default class Setup extends React.Component {
     }
   }
     return (
-      <div className="setup-screen">
+      <div className="setup-tab">
+      <Navbar />
+      <MiddleBar>
       {(() => {
       switch (this.props.currentViewedTab) {
         case 'sizeSettingsTab':
@@ -62,22 +69,30 @@ export default class Setup extends React.Component {
           />
           <button onClick={() => this.props.changeCurrentViewedTab(this.props.currentViewedTab,'add')}
                   type="button">
-                  Go forward
+                  NEXT
           </button>
-          <button onClick={() => this.props.changeCurrentViewedTab(this.props.currentViewedTab,'subtract')}
-                  type="button">
-                  Go back
-          </button>
+          <GridConfigurationPreview maxValues={this.props.field}
+                                    valueType={this.props.startValues.startY}
+                                    staticValues={this.props.staticValues[this.props.startValues.startY]}
+
+           />
+
         </div>
         )
 
         case 'shipsSettingsTab':
         return (
         <div className='setup-ships'>
+          <h2>
+            SHIPS SETTINGS
+          <img className='gearIcon' src={settingsIcon} alt='Show Advanced Ship Options' onClick={this.advancedShipSettingsToggle} />
+          </h2>
+          <div className='ships-info'>
+            <div>AMOUNT</div>
+            <div>HEALTH</div>
+          </div>
           {shipConfigurations}
-          <button onClick={this.advancedShipSettingsToggle} type="button" >Show Advanced ship options</button>
-          <button onClick={() => this.props.changeCurrentViewedTab(this.props.currentViewedTab,'add')} type="button" >Go forward</button>
-          <button onClick={() => this.props.changeCurrentViewedTab(this.props.currentViewedTab,'subtract')} type="button" >Go back</button>
+          <button onClick={() => this.props.changeCurrentViewedTab(this.props.currentViewedTab,'add')} type="button" >NEXT</button>
         </div>
         )
         default:
@@ -85,6 +100,7 @@ export default class Setup extends React.Component {
 
       }
       })()}
+      </MiddleBar>
 
 
 

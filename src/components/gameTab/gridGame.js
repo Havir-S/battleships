@@ -132,7 +132,6 @@ constructor(props) {
        })()}
        {squares}
       </div>
-      <span className='playerName'>{gridPlayerClass}</span>
       </>
 
 
