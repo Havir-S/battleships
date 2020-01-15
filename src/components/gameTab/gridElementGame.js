@@ -11,9 +11,7 @@ class GridGameEnemyElement extends React.Component {
     gridElement = <div data-coords={`${this.props.coordX},${this.props.coordY}`}
                   className="square squareEnemy"
                   onClick={(x) => this.props.handleEnemyHit(this.props.coordX, this.props.coordY)}
-                  >
-                  {`${this.props.coordX},${this.props.coordY}`}
-                  </div>
+                  />
 
     return (
       <>
@@ -34,9 +32,7 @@ class GridGameEnemyShipElement extends React.Component {
     gridElement = <div data-coords={`${this.props.coordX},${this.props.coordY}`}
                   className={`square shipEnemy ${this.props.additionalClass}`}
                   onClick={(x) => this.props.handleEnemyHit(this.props.coordX, this.props.coordY, this.props.ship)}
-                  >
-                  {`${this.props.coordX},${this.props.coordY}`}
-                  </div>
+                  />
 
     return (
       <>
@@ -58,17 +54,13 @@ class GridGameShipElement extends React.Component {
       gridElement = (
         <div data-coords={`${this.props.coordX},${this.props.coordY}`}
                       className="square ship shipHit"
-                      >
-                      {`${this.props.coordX},${this.props.coordY}`}
-                      </div>
+                      />
       )
     } else {
       //if the ship is safe and has not been hit
       gridElement = <div data-coords={`${this.props.coordX},${this.props.coordY}`}
                     className="square ship"
-                    >
-                    {`${this.props.coordX},${this.props.coordY}`}
-                    </div>
+                    />
     }
 
     return (
@@ -88,9 +80,7 @@ export default class GridElementGame extends React.Component {
     return (
       <div data-coords={`${this.props.coordX},${this.props.coordY}`}
                     className="square"
-                    >
-                    {`${this.props.coordX},${this.props.coordY}`}
-                    </div>
+                    />
     )
   }
 }

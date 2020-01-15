@@ -20,22 +20,22 @@ class HealthPreview extends React.Component {
 }
 
 export default class ShipConfiguration extends React.Component {
-
   render() {
     return (
-      <div>
-        <span>{this.props.ship.name} </span>
+      <div className='ship-row'>
+        <span>{this.props.ship.name.toUpperCase()} </span>
 
-        <span onClick={() => this.props.shipChange('subtract', 'amount', this.props.ship.name)}>-</span>
-        <span>amount</span>
-        <span onClick={() => this.props.shipChange('add', 'amount', this.props.ship.name)}>+ </span>
-
+        <div className='ship-config'>
+          <span className='signAction' onClick={() => this.props.shipChange('subtract', 'amount', this.props.ship.name)}>-</span>
+          <span>{this.props.ship.amount}</span>
+          <span className='signAction' onClick={() => this.props.shipChange('add', 'amount', this.props.ship.name)}>+ </span>
+        </div>
         {this.props.hasAdvancedShipSettings &&
-        <>
-          <span onClick={() => this.props.shipChange('subtract', 'health', this.props.ship.name)}> -</span>
-          <span>health</span>
-          <span onClick={() => this.props.shipChange('add', 'health', this.props.ship.name)}>+</span>
-        </>
+        <div className='ship-config'>
+          <span className='signAction' onClick={() => this.props.shipChange('subtract', 'health', this.props.ship.name)}> -</span>
+          <span>{this.props.ship.health}</span>
+          <span className='signAction' onClick={() => this.props.shipChange('add', 'health', this.props.ship.name)}>+</span>
+        </div>
       }
 
       <HealthPreview health={this.props.ship.health} />
