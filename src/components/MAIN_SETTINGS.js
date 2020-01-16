@@ -1,46 +1,23 @@
-// const SETTINGS = {
-//   carriers: {
-//     amount: 5,
-//     health: 1
-//   },
-//   battleships: {
-//     amount: 4,
-//     health: 2
-//   },
-//   cruisers: {
-//     amount: 3,
-//     health: 3
-//   },
-//   submarines: {
-//     amount: 2,
-//     health: 3
-//   },
-//   destroyers: {
-//     amount: 2,
-//     health: 4
-//   }
-// }
-
 export const SETTINGS = {
   ships: {
     carriers: {
       name: "carriers",
-      amount: 0,
+      amount: 3,
       health: 1
     },
     battleships: {
       name: "battleships",
-      amount: 0,
+      amount: 3,
       health: 2
     },
     cruisers: {
       name: "cruisers",
-      amount: 0,
+      amount: 3,
       health: 3
     },
     submarines: {
       name: "submarines",
-      amount: 0,
+      amount: 2,
       health: 3
     },
     destroyers: {

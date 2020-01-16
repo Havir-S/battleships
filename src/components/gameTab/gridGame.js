@@ -32,12 +32,22 @@ constructor(props) {
       // ================================================================
       let {x, y} = this.props.maxValues;
 
+      //x coordinate FOR
       for (let i = 1; i <= x; i++) {
         //y coordinate FOR
         for (let j = 1; j <= y; j++) {
+
+          let additionalClass = '';
+          for (let checkHit of this.props.alreadyShotByAi) {
+            if (checkHit[0] === j && checkHit[1] === i) {
+              additionalClass = 'hitSquare';
+            }
+          }
+
             squares.push(<GridElementGame coordX={j}
                                           coordY={i}
                                           key={`${j},${i}`}
+                                          additionalClass={additionalClass}
                                           />)
         }
       }
@@ -71,23 +81,39 @@ constructor(props) {
       // ================================================================
       let {x, y} = this.props.maxValues;
 
+      // MAKING THE BASIC GRID
+      //x coordinate FOR
       for (let i = 1; i <= x; i++) {
         //y coordinate FOR
         for (let j = 1; j <= y; j++) {
+
+          //CHECK IF HIT BEFORE
+          let additionalClass = '';
+          for (let checkHit of this.props.alreadyShotByPlayer) {
+            if (checkHit[0] === j && checkHit[1] === i) {
+              additionalClass = 'hitSquare';
+            }
+          }
+
+            //ADD TO THE GRID
             squares.push(<GridGameEnemyElement coordX={j}
                                           coordY={i}
                                           key={`${j},${i}`}
                                           handleEnemyHit={this.props.handleEnemyHit}
+                                          additionalClass={additionalClass}
                                           />)
         }
       }
 
+
+      //FILLING THE GRID WITH SHIPS
       for (var k = 0; k < squares.length; k++) {
         let [ squareCoordX, squareCoordY ] = squares[k].key.split(",");
 
         //check all the ai deployed ships
         for (let aiDeployedShip of this.props.aiDeployedShips) {
 
+          //Checking hp blocks
           for (let hpBar of aiDeployedShip.blocks) {
             let {x, y} = hpBar;
             if (x === Number(squareCoordX) && y === Number(squareCoordY)) {
@@ -98,7 +124,7 @@ constructor(props) {
                                                             coordX={x}
                                                             coordY={y}
                                                             handleEnemyHit={this.props.handleEnemyHit}
-                                                            additionalClass='shipEnemyHit'
+                                                            additionalClass='shipEnemyHit hitShip'
                                                             ship={aiDeployedShip}
                 />
               } else {
