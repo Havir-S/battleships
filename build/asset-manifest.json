@@ -1,0 +1,34 @@
+{
+  "files": {
+    "main.css": "/battleships/static/css/main.fcfa3005.chunk.css",
+    "main.js": "/battleships/static/js/main.1c65c4dd.chunk.js",
+    "main.js.map": "/battleships/static/js/main.1c65c4dd.chunk.js.map",
+    "runtime-main.js": "/battleships/static/js/runtime-main.80d0a79c.js",
+    "runtime-main.js.map": "/battleships/static/js/runtime-main.80d0a79c.js.map",
+    "static/js/2.019a17e4.chunk.js": "/battleships/static/js/2.019a17e4.chunk.js",
+    "static/js/2.019a17e4.chunk.js.map": "/battleships/static/js/2.019a17e4.chunk.js.map",
+    "index.html": "/battleships/index.html",
+    "precache-manifest.e2da7fc5ad012d0417f10f2105ccfb31.js": "/battleships/precache-manifest.e2da7fc5ad012d0417f10f2105ccfb31.js",
+    "service-worker.js": "/battleships/service-worker.js",
+    "static/css/main.fcfa3005.chunk.css.map": "/battleships/static/css/main.fcfa3005.chunk.css.map",
+    "static/js/2.019a17e4.chunk.js.LICENSE": "/battleships/static/js/2.019a17e4.chunk.js.LICENSE",
+    "static/media/mainStyle.scss": "/battleships/static/media/steering-wheel.66ad3dc1.svg",
+    "static/media/allyNormal.png": "/battleships/static/media/allyNormal.95d2e27f.png",
+    "static/media/allyScared.png": "/battleships/static/media/allyScared.2591bd28.png",
+    "static/media/captain5.png": "/battleships/static/media/captain5.01820855.png",
+    "static/media/captainEnemy1.png": "/battleships/static/media/captainEnemy1.eb53902c.png",
+    "static/media/enemyNormal.png": "/battleships/static/media/enemyNormal.36f8223a.png",
+    "static/media/enemyScared.png": "/battleships/static/media/enemyScared.695a8972.png",
+    "static/media/exit.svg": "/battleships/static/media/exit.427e08d5.svg",
+    "static/media/gear.svg": "/battleships/static/media/gear.d27d156d.svg",
+    "static/media/question.svg": "/battleships/static/media/question.f0a4f4fc.svg",
+    "static/media/rudder.svg": "/battleships/static/media/rudder.26779c0c.svg",
+    "static/media/submarine.png": "/battleships/static/media/submarine.35c38dee.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.80d0a79c.js",
+    "static/js/2.019a17e4.chunk.js",
+    "static/css/main.fcfa3005.chunk.css",
+    "static/js/main.1c65c4dd.chunk.js"
+  ]
+}
