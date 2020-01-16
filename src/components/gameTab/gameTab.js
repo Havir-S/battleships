@@ -58,6 +58,9 @@ export default class GameTab extends React.Component {
                     playerDeployedShips={this.props.playerDeployedShips}
                     maxValues={this.props.maxValues}
                     handleHit={this.props.handleHit}
+
+                    alreadyShotByAi={this.props.alreadyShotByAi}
+                    alreadyShotByPlayer={this.props.alreadyShotByPlayer}
           />
           <h2>PLAYER</h2>
         </div>
@@ -67,6 +70,9 @@ export default class GameTab extends React.Component {
                     aiDeployedShips={this.props.aiDeployedShips}
                     maxValues={this.props.maxValues}
                     handleEnemyHit={this.props.handleEnemyHit}
+
+                    alreadyShotByAi={this.props.alreadyShotByAi}
+                    alreadyShotByPlayer={this.props.alreadyShotByPlayer}
           />
           <h2>ENEMY</h2>
         </div>

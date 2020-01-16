@@ -471,6 +471,9 @@ componentDidUpdate() {
 
                  history={this.state.actionsHistory}
                  winner={this.state.winner}
+
+                 alreadyShotByAi={this.state.alreadyShotByAi}
+                 alreadyShotByPlayer={this.state.alreadyShotByPlayer}
         />
 
       );
